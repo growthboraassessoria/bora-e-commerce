@@ -13,7 +13,20 @@ async function settings() {
   return s;
 }
 
+// Domínio oficial. O endereço antigo da Vercel manda para ele (páginas e GET), menos /api: o webhook da Pagar.me
+// ainda pode estar apontando para o endereço antigo e não segue redirecionamento.
+const OFFICIAL_HOST = "loja.boraassessoria.com";
+const LEGACY_HOSTS = new Set(["borausar.vercel.app"]);
+
 export async function proxy(req: NextRequest) {
+  const host = (req.headers.get("host") ?? "").toLowerCase();
+  if (LEGACY_HOSTS.has(host) && req.method === "GET" && !req.nextUrl.pathname.startsWith("/api/")) {
+    const url = req.nextUrl.clone();
+    url.protocol = "https:";
+    url.host = OFFICIAL_HOST;
+    url.port = "";
+    return NextResponse.redirect(url, 308);
+  }
   // O cabeçalho de liberação só pode vir daqui, nunca do navegador.
   const h = new Headers(req.headers);
   h.delete("x-bora-gate");
