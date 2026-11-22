@@ -2,7 +2,7 @@
 import SizePicker from "./SizePicker";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import { cart } from "@/lib/cart";
 import { brl } from "@/lib/money";
@@ -16,6 +16,7 @@ import { CheckIcon, MinusIcon, PlusIcon, ReturnIcon, ShieldIcon, TruckIcon } fro
 import PaymentIcons from "@/components/ui/PaymentIcons";
 import { PICKUP, pickupWhen } from "@/lib/presale";
 import SizeGuide from "./SizeGuide";
+import { useIsPhone, useSheetDrag } from "@/components/ui/ios";
 
 // Opções no padrão da Shopify: Cor em bolinhas, Tamanho no seletor grande e as demais (Estilo, Material...) em botões.
 // A variante é a combinação escolhida; preço, estoque e foto vêm dela.
@@ -51,6 +52,10 @@ export default function ProductView({ p }: { p: Product }) {
   const [added, setAdded] = useState(false);
   const [needSize, setNeedSize] = useState(false);
   const [guide, setGuide] = useState(false);
+  // Celular: escolher o tamanho numa folha que sobe de baixo (em vez de rolar a página até o seletor).
+  const phone = useIsPhone();
+  const [sizeSheet, setSizeSheet] = useState<null | "add" | "buy">(null);
+  const sheetDrag = useSheetDrag(() => setSizeSheet(null));
 
   useEffect(() => {
     track("view_item", {
@@ -68,6 +73,10 @@ export default function ProductView({ p }: { p: Product }) {
     return [...extra, ...ownVariant, ...own, ...neutral, ...others];
   }, [p, color, variant]);
   const [active, setActive] = useState(0);
+  // Carrossel do celular (rolagem com "snap", foto a foto): o ponto ativo acompanha o dedo.
+  const reel = useRef<HTMLDivElement>(null);
+  const goTo = (i: number) => { setActive(i); const r = reel.current; if (r) r.scrollTo({ left: i * r.clientWidth, behavior: "smooth" }); };
+  useEffect(() => { reel.current?.scrollTo({ left: 0 }); }, [color]);
   const [zoom, setZoom] = useState<{ x: number; y: number } | null>(null);
 
   const price = variant?.priceCents ?? p.priceCents;
@@ -95,9 +104,11 @@ export default function ProductView({ p }: { p: Product }) {
     if (!variant) {
       if (single || sel[sizeName]) return; // combinação que não existe: nada a adicionar
       setNeedSize(true);
-      document.getElementById("tamanhos")?.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (phone) setSizeSheet(goCheckout ? "buy" : "add");
+      else document.getElementById("tamanhos")?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
+    setSizeSheet(null);
     cart.add(variant.id, qty, !goCheckout, { itemId: p.id, name: p.name, size: label || variant.size, priceCents: variant.priceCents ?? p.priceCents });
     if (goCheckout) router.push("/checkout");
     else {
@@ -110,8 +121,34 @@ export default function ProductView({ p }: { p: Product }) {
     <div className="grid lg:grid-cols-[1.25fr_1fr] gap-8 lg:gap-14">
       {/* Galeria */}
       <div className="min-w-0 lg:sticky lg:top-[calc(var(--header-h)+16px)] self-start">
+        {/* Celular e tablet: fotos de ponta a ponta, deslizando uma a uma */}
+        <div className="lg:hidden relative -mx-[var(--gutter)] sm:mx-0 sm:rounded-[28px] overflow-hidden bg-sand">
+          <div ref={reel} onScroll={(e) => { const r = e.currentTarget; const i = Math.round(r.scrollLeft / Math.max(1, r.clientWidth)); if (i !== active) setActive(i); }}
+            className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar overscroll-x-contain" aria-label="Fotos do produto">
+            {images.map((img, i) => (
+              <div key={img.url} className="relative shrink-0 w-full aspect-[4/5] snap-center snap-always">
+                <Image src={img.url} alt={img.alt} fill priority={i === 0} sizes="(min-width:640px) 90vw, 100vw" className="object-cover" />
+              </div>
+            ))}
+          </div>
+          <div className="absolute left-4 top-4 flex gap-1.5 pointer-events-none">
+            {p.badges.map((b, i) => <span key={b} className={`chip ${i === 0 ? "chip-neon" : "chip-ink"}`}>{b}</span>)}
+          </div>
+          {images.length > 1 ? (
+            <div className="absolute bottom-3 inset-x-0 flex justify-center">
+              <div className="flex items-center gap-0.5 rounded-full bg-white/70 backdrop-blur-md px-1.5">
+                {images.map((_, i) => (
+                  <button key={i} type="button" aria-label={`Foto ${i + 1} de ${images.length}`} aria-current={i === active} onClick={() => goTo(i)} className="h-7 px-[3px] grid place-items-center">
+                    <span className={`block h-1.5 rounded-full transition-all duration-300 ${i === active ? "w-5 bg-ink" : "w-1.5 bg-ink/30"}`} />
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </div>
+
         <div
-          className="relative aspect-[4/5] rounded-[28px] overflow-hidden bg-sand cursor-zoom-in"
+          className="hidden lg:block relative aspect-[4/5] rounded-[28px] overflow-hidden bg-sand cursor-zoom-in"
           onMouseMove={(e) => {
             const r = e.currentTarget.getBoundingClientRect();
             setZoom({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100 });
@@ -133,11 +170,8 @@ export default function ProductView({ p }: { p: Product }) {
           <div className="absolute left-4 top-4 flex gap-1.5">
             {p.badges.map((b, i) => <span key={b} className={`chip ${i === 0 ? "chip-neon" : "chip-ink"}`}>{b}</span>)}
           </div>
-          <div className="lg:hidden absolute bottom-4 inset-x-0 flex justify-center gap-1.5">
-            {images.map((_, i) => <button key={i} type="button" aria-label={`Foto ${i + 1}`} onClick={() => setActive(i)} className={`h-1.5 rounded-full transition-all ${i === active ? "w-6 bg-ink" : "w-1.5 bg-ink/30"}`} />)}
-          </div>
         </div>
-        <div className="mt-3 flex gap-3 overflow-x-auto no-scrollbar">
+        <div className="hidden lg:flex mt-3 gap-3 overflow-x-auto no-scrollbar">
           {images.map((img, i) => (
             <button key={img.url} type="button" onClick={() => setActive(i)} aria-label={img.alt} className={`relative shrink-0 size-20 rounded-2xl overflow-hidden bg-sand transition ${i === active ? "ring-2 ring-ink" : "opacity-70 hover:opacity-100"}`}>
               <Image src={img.url} alt="" fill sizes="80px" className="object-cover" />
@@ -149,7 +183,7 @@ export default function ProductView({ p }: { p: Product }) {
       {/* Compra */}
       <div className="min-w-0">
         <p className="eyebrow">{p.subtitle}</p>
-        <h1 className="display text-[clamp(36px,4.4vw,64px)] mt-3">{p.name}</h1>
+        <h1 className="display text-[clamp(34px,4.4vw,64px)] mt-2 lg:mt-3">{p.name}</h1>
         <div className="mt-5 flex items-baseline gap-3 flex-wrap">
           <span className="text-3xl font-black tracking-tight">{brl(price)}</span>
           {compareAt && compareAt > price ? <span className="text-lg text-ink-3 line-through">{brl(compareAt)}</span> : null}
@@ -195,7 +229,7 @@ export default function ProductView({ p }: { p: Product }) {
           <div className="mt-7" id="tamanhos">
             <div className="flex items-center justify-between">
               <p className={`text-sm font-bold ${needSize && !variant ? "text-danger" : ""}`}>{needSize && !variant ? "Escolha um tamanho" : <>{sizeName || "Tamanho"}{sel[sizeName] ? <span className="font-normal text-ink-2">: {sel[sizeName]}</span> : null}</>}</p>
-              <button type="button" onClick={() => setGuide(true)} className="text-sm font-bold underline underline-offset-4">Guia de medidas</button>
+              <button type="button" onClick={() => setGuide(true)} className="h-11 -my-2.5 text-sm font-bold underline underline-offset-4">Guia de medidas</button>
             </div>
             <div className="mt-3">
               <SizePicker item={{ id: p.id, name: p.name }} sizes={sizes} value={sizes.find((x) => x.size === sel[sizeName])?.id ?? null} low={3} invalid={needSize} onPick={(id) => { const s2 = sizes.find((x) => x.id === id); if (s2) pick(sizeName, s2.size); setNeedSize(false); setQty(1); }} />
@@ -223,10 +257,10 @@ export default function ProductView({ p }: { p: Product }) {
         <button type="button" disabled={soldOut || (!!variant && variant.stock <= 0)} onClick={() => add(true)} className="btn btn-neon btn-lg btn-block mt-3">Comprar agora</button>
         </>)}
 
-        <ul className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-          <li className="flex items-center gap-2.5 rounded-2xl bg-sand p-3.5"><TruckIcon size={20} /> Retirada no evento</li>
-          <li className="flex items-center gap-2.5 rounded-2xl bg-sand p-3.5"><ReturnIcon size={20} /> Troca na retirada</li>
-          <li className="flex items-center gap-2.5 rounded-2xl bg-sand p-3.5"><ShieldIcon size={20} /> Compra segura</li>
+        <ul className="mt-8 grid grid-cols-3 gap-2 sm:gap-3 text-[13px] sm:text-sm leading-tight">
+          <li className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-1.5 sm:gap-2.5 rounded-2xl bg-sand p-3 sm:p-3.5"><TruckIcon size={20} /> Retirada no evento</li>
+          <li className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-1.5 sm:gap-2.5 rounded-2xl bg-sand p-3 sm:p-3.5"><ReturnIcon size={20} /> Troca na retirada</li>
+          <li className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-1.5 sm:gap-2.5 rounded-2xl bg-sand p-3 sm:p-3.5"><ShieldIcon size={20} /> Compra segura</li>
         </ul>
 
         <div className="mt-6"><PaymentIcons /></div>
@@ -236,8 +270,8 @@ export default function ProductView({ p }: { p: Product }) {
         </div>
 
         <div className="mt-10">
-          <p className="text-lg leading-relaxed text-ink-2">{p.description}</p>
-          <ul className="mt-6 grid grid-cols-2 gap-2">
+          <p className="text-[17px] sm:text-lg leading-relaxed text-ink-2">{p.description}</p>
+          <ul className="mt-6 grid grid-cols-1 min-[400px]:grid-cols-2 gap-x-3 gap-y-2.5">
             {p.highlights.map((h) => <li key={h} className="flex items-center gap-2 text-sm font-bold"><span className="size-5 rounded-full bg-neon grid place-items-center"><CheckIcon size={12} /></span>{h}</li>)}
           </ul>
         </div>
@@ -260,18 +294,44 @@ export default function ProductView({ p }: { p: Product }) {
         </div>
       </div>
 
-      {/* Barra fixa no celular */}
-      <div className="lg:hidden fixed inset-x-0 bottom-0 z-40 bg-white/95 backdrop-blur-xl border-t border-line px-4 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] flex items-center gap-3">
-        <div className="min-w-0">
-          <p className="text-xs text-ink-3 truncate">{variant ? label : !single && !sel[sizeName] ? "Escolha o tamanho" : "Escolha as opções"}</p>
-          <p className="font-black">{brl(price)}</p>
+      {/* Barra fixa no celular (no lugar da barra de abas, como numa tela "empurrada" do iOS) */}
+      <div className="lg:hidden fixed inset-x-0 bottom-0 z-40 bg-white/85 backdrop-blur-xl backdrop-saturate-150 shadow-[0_-0.5px_0_var(--color-line-strong)] px-[max(16px,env(safe-area-inset-left))] pt-2.5 pb-[max(10px,env(safe-area-inset-bottom))] flex items-center gap-3">
+        <div className="min-w-0 flex-1">
+          <p className="text-[13px] text-ink-3 truncate">{variant ? label : !single && !sel[sizeName] ? "Escolha o tamanho" : "Escolha as opções"}</p>
+          <p className="text-lg font-black leading-tight">{brl(price)}</p>
         </div>
         {SALES_OPEN ? (
-          <button type="button" disabled={soldOut} onClick={() => add(false)} className="btn btn-primary flex-1">{added ? "Na sacola ✓" : "Adicionar"}</button>
+          <button type="button" disabled={soldOut} onClick={() => add(false)} className="btn btn-primary h-12 px-7 shrink-0">{added ? "Na sacola ✓" : "Adicionar"}</button>
         ) : (
           <SoonCTA className="flex-1 !min-h-[52px] !text-sm" label="Abre em breve" message={`Oi! Quero garantir a ${p.name}${variant ? ` (${label})` : ""} na pré-venda Volta 18K. Me avisa quando abrir?`} />
         )}
       </div>
+
+      {/* Folha de tamanhos (celular) */}
+      {sizeSheet ? (
+        <div className="lg:hidden fixed inset-0 z-[75]" role="dialog" aria-label="Escolha o tamanho">
+          <div className="absolute inset-0 bg-black/35 animate-[fade-in_.25s_ease-out]" onClick={() => setSizeSheet(null)} />
+          <div style={sheetDrag.style} className={`absolute inset-x-0 bottom-0 rounded-t-[28px] bg-white px-5 pb-[max(20px,env(safe-area-inset-bottom))] animate-sheet ${sheetDrag.dragging ? "" : "transition-transform duration-300"}`}>
+            <div className="pt-2.5 pb-1 touch-none" {...sheetDrag.handlers}>
+              <span className="sheet-grabber" />
+              <div className="mt-3 flex items-center gap-3">
+                <div className="relative size-14 shrink-0 rounded-xl overflow-hidden bg-sand"><Image src={images[0]?.url ?? p.images[0].url} alt="" fill sizes="56px" className="object-cover" /></div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[13px] text-ink-3 truncate">{p.name}</p>
+                  <p className="text-xl font-black uppercase tracking-tight leading-tight">Escolha o tamanho</p>
+                </div>
+              </div>
+            </div>
+            <div className="mt-4">
+              <SizePicker item={{ id: p.id, name: p.name }} sizes={sizes} value={sizes.find((x) => x.size === sel[sizeName])?.id ?? null} low={3} onPick={(id) => { const s2 = sizes.find((x) => x.id === id); if (s2) pick(sizeName, s2.size); setNeedSize(false); setQty(1); }} />
+            </div>
+            <button type="button" onClick={() => setGuide(true)} className="mt-2 h-11 text-sm font-bold underline underline-offset-4">Guia de medidas</button>
+            <button type="button" disabled={!variant || variant.stock <= 0} onClick={() => add(sizeSheet === "buy")} className={`btn btn-lg btn-block mt-2 ${sizeSheet === "buy" ? "btn-neon" : "btn-primary"}`}>
+              {!variant ? "Escolha um tamanho" : sizeSheet === "buy" ? `Comprar agora · ${brl(price)}` : `Adicionar à sacola · ${brl(price)}`}
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       {guide ? <SizeGuide category={p.categorySlug} onClose={() => setGuide(false)} /> : null}
     </div>

@@ -8,7 +8,7 @@ import PasswordForm from "./PasswordForm";
 
 export default function PasswordPage({ message }: { message: string }) {
   return (
-    <main className="relative min-h-svh bg-white overflow-hidden flex flex-col">
+    <main className="relative min-h-svh bg-white overflow-hidden flex flex-col pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
       <Image src="/img/marca/pattern-bora-white.webp" alt="" width={1200} height={1340} className="absolute -right-56 -bottom-64 w-[820px] opacity-[0.07] invert pointer-events-none select-none" />
       <header className="wrap h-16 flex items-center">
         <span className="flex items-center gap-2">
@@ -17,7 +17,7 @@ export default function PasswordPage({ message }: { message: string }) {
         </span>
       </header>
 
-      <section className="relative wrap flex-1 grid place-items-center py-12">
+      <section className="relative wrap flex-1 grid place-items-center py-8 sm:py-12">
         <div className="w-full max-w-md">
           <span className="chip chip-neon">Acesso com senha</span>
           <h1 className="display text-[clamp(44px,9vw,84px)] mt-6">Quase<br /><span className="mark">lá.</span></h1>

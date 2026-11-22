@@ -47,16 +47,16 @@ export default function MyOrders() {
   };
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[400px_1fr] items-start">
-      <form onSubmit={submit} noValidate className="card p-6 sm:p-7 shadow-[var(--shadow-card)] lg:sticky lg:top-[calc(var(--header-h)+16px)]">
-        <div className="grid gap-4">
+    <div className="grid gap-8 lg:gap-10 lg:grid-cols-[400px_1fr] items-start">
+      <form onSubmit={submit} noValidate className="card max-sm:bg-transparent max-sm:!shadow-none sm:p-7 sm:shadow-[var(--shadow-card)] lg:sticky lg:top-[calc(var(--header-h)+16px)]">
+        <div className="ios-group grid gap-4">
           <label className="field">
             <span>CPF de quem comprou</span>
-            <input className="input" inputMode="numeric" autoComplete="off" placeholder="000.000.000-00" value={cpf} onChange={(e) => setCpf(formatCpf(e.target.value))} />
+            <input className="input tabular-nums" inputMode="numeric" autoComplete="off" enterKeyHint="next" placeholder="000.000.000-00" value={cpf} onChange={(e) => setCpf(formatCpf(e.target.value))} />
           </label>
           <label className="field">
             <span>Celular usado na compra</span>
-            <input className="input" inputMode="tel" autoComplete="tel-national" placeholder="(00) 00000-0000" value={phone} onChange={(e) => setPhone(formatPhone(e.target.value))} />
+            <input className="input tabular-nums" type="tel" inputMode="tel" autoComplete="tel-national" enterKeyHint="search" placeholder="(00) 00000-0000" value={phone} onChange={(e) => setPhone(formatPhone(e.target.value))} />
           </label>
         </div>
         {error ? <p role="alert" className="mt-4 text-sm font-bold text-danger">{error}</p> : null}
@@ -66,12 +66,12 @@ export default function MyOrders() {
 
       <div aria-live="polite">
         {orders === null ? (
-          <div className="rounded-[28px] bg-sand p-8 sm:p-10">
+          <div className="rounded-[24px] sm:rounded-[28px] bg-sand p-6 sm:p-10">
             <p className="text-xl font-black uppercase tracking-tight">Seu passe fica aqui</p>
             <p className="mt-2 text-ink-2 max-w-md">Depois do pagamento aprovado, o passe de retirada com QR Code aparece no pedido. No evento, é só mostrar.</p>
           </div>
         ) : orders.length === 0 ? (
-          <div className="rounded-[28px] bg-sand p-8 sm:p-10">
+          <div className="rounded-[24px] sm:rounded-[28px] bg-sand p-6 sm:p-10">
             <p className="text-xl font-black uppercase tracking-tight">Nenhum pedido encontrado</p>
             <p className="mt-2 text-ink-2 max-w-md">Não achamos pedidos com esse CPF e esse celular juntos. Confira se são os mesmos usados na compra.</p>
             <Link href="/colecao/todos" className="btn btn-ghost mt-6">Ver a loja</Link>
@@ -102,7 +102,7 @@ export default function MyOrders() {
                     <dt className="text-ink-3">Total</dt><dt className="text-ink-3">Quem retira</dt>
                     <dd className="font-black text-lg">{brl(o.totalCents)}</dd><dd className="font-bold truncate max-w-[14rem] self-center">{o.pickupBy}</dd>
                   </dl>
-                  <Link href={o.passUrl} className={`btn ${o.status === "paid" || o.status === "shipped" ? "btn-primary" : "btn-ghost"}`}>Ver passe <ArrowIcon size={16} /></Link>
+                  <Link href={o.passUrl} className={`btn max-sm:w-full ${o.status === "paid" || o.status === "shipped" ? "btn-primary" : "btn-ghost"}`}>Ver passe <ArrowIcon size={16} /></Link>
                 </div>
               </li>
             ))}

@@ -49,8 +49,8 @@ export default async function Home() {
               Roupa feita por quem corre junto. Running is a lifestyle, beyond the pace. Do primeiro 5k ao pós-treino.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/volta-18k" className="btn btn-primary btn-lg">Pré-venda Volta 18K <ArrowIcon size={18} /></Link>
-              <Link href="/experiencia" className="btn btn-ghost btn-lg">Entrar na experiência 3D</Link>
+              <Link href="/volta-18k" className="btn btn-primary btn-lg max-sm:w-full">Pré-venda Volta 18K <ArrowIcon size={18} /></Link>
+              <Link href="/experiencia" className="btn btn-ghost btn-lg max-sm:w-full">Entrar na experiência 3D</Link>
             </div>
             <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-2">
               <li className="flex items-center gap-2"><TruckIcon size={18} /> Retirada no evento, na Pampulha</li>
@@ -123,7 +123,7 @@ export default async function Home() {
           </div>
           <Link href="/colecao/todos" className="hidden sm:inline-flex btn btn-ghost">Ver tudo</Link>
         </div>
-        <div className="mt-8 flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory -mx-[var(--gutter)] px-[var(--gutter)] pb-2">
+        <div className="mt-8 flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory overscroll-x-contain -mx-[var(--gutter)] px-[var(--gutter)] scroll-px-[var(--gutter)] pb-2">
           {categories.map((c) => (
             <Link key={c.slug} href={`/colecao/${c.slug}`} className="group relative shrink-0 snap-start w-[72%] sm:w-[40%] lg:w-[calc((100%-64px)/5)] aspect-[3/4] rounded-[24px] overflow-hidden bg-sand">
               <Image src={c.image} alt={c.name} fill sizes="(min-width:1024px) 20vw, 70vw" className="object-cover transition-transform duration-700 ease-out-expo group-hover:scale-105" />
@@ -144,7 +144,7 @@ export default async function Home() {
             <p className="eyebrow">À venda</p>
             <h2 className="display text-[clamp(36px,5vw,64px)] mt-2">A coleção</h2>
           </div>
-          <Link href="/colecao/todos" className="text-sm font-bold underline underline-offset-4">Ver todos</Link>
+          <Link href="/colecao/todos" className="h-11 inline-flex items-center text-sm font-bold underline underline-offset-4 shrink-0">Ver todos</Link>
         </div>
         <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10">
           {featured.slice(0, 8).map((p, i) => <ProductCard key={p.id} p={p} priority={i < 4} />)}

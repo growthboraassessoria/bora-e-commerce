@@ -15,10 +15,10 @@ export default function CollectionFilters({ base, params, colors, sizes, count }
     const qs = new URLSearchParams(Object.entries(next).filter(([, v]) => v) as [string, string][]).toString();
     return qs ? `${base}?${qs}` : base;
   };
-  const chip = (active: boolean) => `h-9 px-4 rounded-full text-sm font-bold inline-flex items-center gap-2 transition-colors ${active ? "bg-ink text-white" : "ring-1 ring-line hover:ring-ink"}`;
+  const chip = (active: boolean) => `pressable h-10 lg:h-9 px-4 shrink-0 rounded-full text-sm font-bold inline-flex items-center gap-2 transition-colors ${active ? "bg-ink text-white" : "ring-1 ring-line hover:ring-ink"}`;
   const anyFilter = params.cor || params.tamanho || params.disponivel;
   return (
-    <div className="sticky top-[var(--header-h)] z-30 bg-white/90 backdrop-blur-xl -mx-[var(--gutter)] px-[var(--gutter)] py-3 border-b border-line">
+    <div className="sticky top-[calc(var(--header-h)+env(safe-area-inset-top))] z-30 bg-white/85 backdrop-blur-xl backdrop-saturate-150 -mx-[var(--gutter)] px-[var(--gutter)] py-3 border-b border-line">
       <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
         <span className="text-sm text-ink-3 shrink-0 mr-1 tabular-nums">{count} {count === 1 ? "produto" : "produtos"}</span>
         {colors.map((c) => (
@@ -32,10 +32,10 @@ export default function CollectionFilters({ base, params, colors, sizes, count }
         ))}
         <span className="w-px h-6 bg-line mx-1 shrink-0" />
         <Link scroll={false} href={href({ disponivel: params.disponivel ? undefined : "1" })} className={chip(!!params.disponivel)}>Em estoque</Link>
-        {anyFilter ? <Link scroll={false} href={href({ cor: undefined, tamanho: undefined, disponivel: undefined })} className="text-sm font-bold underline underline-offset-4 shrink-0 px-2">Limpar</Link> : null}
+        {anyFilter ? <Link scroll={false} href={href({ cor: undefined, tamanho: undefined, disponivel: undefined })} className="h-10 inline-flex items-center text-sm font-bold underline underline-offset-4 shrink-0 px-2">Limpar</Link> : null}
         <div className="ml-auto flex items-center gap-1 shrink-0 pl-4">
           {SORTS.map((s) => (
-            <Link key={s.value} scroll={false} href={href({ ordem: s.value === "destaques" ? undefined : s.value })} className={`h-9 px-3 rounded-full text-sm font-bold inline-flex items-center ${(params.ordem ?? "destaques") === s.value ? "bg-sand" : "text-ink-3 hover:text-ink"}`}>{s.label}</Link>
+            <Link key={s.value} scroll={false} href={href({ ordem: s.value === "destaques" ? undefined : s.value })} className={`h-10 lg:h-9 px-3 rounded-full text-sm font-bold inline-flex items-center ${(params.ordem ?? "destaques") === s.value ? "bg-sand" : "text-ink-3 hover:text-ink"}`}>{s.label}</Link>
           ))}
         </div>
       </div>

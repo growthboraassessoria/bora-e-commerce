@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { CloseIcon } from "@/components/ui/Icons";
+import { useSheetDrag } from "@/components/ui/ios";
 
 // Medidas de referência (provisórias): confirmar com a ficha técnica do fornecedor.
 const TABLES: Record<string, { head: string[]; rows: string[][]; note: string }> = {
@@ -14,19 +15,24 @@ const TABLES: Record<string, { head: string[]; rows: string[][]; note: string }>
 
 export default function SizeGuide({ category, onClose }: { category: string; onClose: () => void }) {
   const t = TABLES[category] ?? TABLES.camisetas;
+  const drag = useSheetDrag(onClose);
   useEffect(() => {
     const on = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     document.addEventListener("keydown", on);
     return () => document.removeEventListener("keydown", on);
   }, [onClose]);
   return (
-    <div className="fixed inset-0 z-[80] grid place-items-end sm:place-items-center bg-black/40 p-0 sm:p-6" onClick={onClose} role="dialog" aria-label="Guia de medidas">
-      <div className="bg-white w-full sm:max-w-lg rounded-t-[28px] sm:rounded-[28px] p-7 animate-rise" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between">
-          <p className="text-2xl font-black uppercase tracking-tight">Guia de medidas</p>
-          <button type="button" onClick={onClose} aria-label="Fechar" className="size-10 grid place-items-center rounded-full hover:bg-sand"><CloseIcon /></button>
+    <div className="fixed inset-0 z-[80] grid place-items-end sm:place-items-center bg-black/40 p-0 sm:p-6 animate-[fade-in_.25s_ease-out]" onClick={onClose} role="dialog" aria-label="Guia de medidas">
+      {/* Celular: folha que sobe de baixo (arraste a alça para fechar). Desktop: janela no centro. */}
+      <div style={drag.style} className={`bg-white w-full sm:max-w-lg max-h-[88svh] overflow-y-auto overscroll-contain rounded-t-[28px] sm:rounded-[28px] px-6 pb-[max(24px,env(safe-area-inset-bottom))] sm:p-7 animate-sheet ${drag.dragging ? "" : "transition-transform duration-300"}`} onClick={(e) => e.stopPropagation()}>
+        <div className="pt-2.5 sm:pt-0 touch-none sm:touch-auto" {...drag.handlers}>
+          <span className="sheet-grabber sm:hidden" aria-hidden />
+          <div className="mt-2 sm:mt-0 flex items-center justify-between">
+            <p className="text-xl sm:text-2xl font-black uppercase tracking-tight">Guia de medidas</p>
+            <button type="button" onClick={onClose} aria-label="Fechar" className="pressable size-11 -mr-2 grid place-items-center rounded-full bg-sand sm:bg-transparent hover:bg-sand"><CloseIcon size={20} /></button>
+          </div>
         </div>
-        <table className="mt-5 w-full text-sm">
+        <table className="mt-4 w-full text-[15px] sm:text-sm tabular-nums">
           <thead><tr>{t.head.map((h) => <th key={h} className="text-left py-2 border-b border-line text-ink-3 font-bold">{h}</th>)}</tr></thead>
           <tbody>{t.rows.map((r) => <tr key={r[0]}>{r.map((c, i) => <td key={i} className={`py-2.5 border-b border-line ${i === 0 ? "font-bold" : ""}`}>{c}</td>)}</tr>)}</tbody>
         </table>

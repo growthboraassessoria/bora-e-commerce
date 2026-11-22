@@ -11,7 +11,7 @@ export default function Footer() {
   return (
     <footer className="bg-ink text-white mt-24 relative overflow-hidden">
       <Image src="/img/marca/pattern-bora-white.webp" alt="" width={900} height={1000} className="absolute -right-40 -top-20 w-[720px] opacity-[0.06] pointer-events-none select-none" />
-      <div className="wrap relative py-16 grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+      <div className="wrap relative py-14 lg:py-16 grid gap-10 lg:gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
           <Logo white className="h-7 w-auto" />
           <p className="mt-3 text-white/70">{STORE.tagline}</p>
@@ -20,7 +20,7 @@ export default function Footer() {
         </div>
         <div>
           <p className="eyebrow text-white/50">Loja</p>
-          <ul className="mt-4 grid gap-2.5 text-white/80">
+          <ul className="mt-3 grid text-white/80 [&_a]:inline-block [&_a]:py-2 lg:[&_a]:py-1">
             <li><Link href="/volta-18k" className="hover:text-neon">Pré-venda Volta 18K</Link></li>
             <li><Link href="/produto/camiseta-letz-bora-algodao" className="hover:text-neon">Camiseta LETZ BORA</Link></li>
             <li><Link href="/produto/regata-cropped-bora" className="hover:text-neon">Regata Cropped BORA</Link></li>
@@ -30,7 +30,7 @@ export default function Footer() {
         </div>
         <div>
           <p className="eyebrow text-white/50">Ajuda</p>
-          <ul className="mt-4 grid gap-2.5 text-white/80">
+          <ul className="mt-3 grid text-white/80 [&_a]:inline-block [&_a]:py-2 lg:[&_a]:py-1">
             <li><Link href="/meus-pedidos" className="hover:text-neon">Meus pedidos</Link></li>
             <li><Link href="/politicas/trocas-e-devolucoes" className="hover:text-neon">Trocas e devoluções</Link></li>
             <li><Link href="/politicas/entrega" className="hover:text-neon">Retirada no evento</Link></li>
@@ -41,14 +41,14 @@ export default function Footer() {
         </div>
         <div>
           <p className="eyebrow text-white/50">Contato</p>
-          <ul className="mt-4 grid gap-2.5 text-white/80">
+          <ul className="mt-3 grid text-white/80 [&_a]:inline-block [&_a]:py-2 lg:[&_a]:py-1">
             <li><a href={`mailto:${STORE.email}`} className="hover:text-neon break-all">{STORE.email}</a></li>
             <li><TrackedA event="whatsapp_click" props={{ location: "rodape" }} href={STORE.whatsappUrl} target="_blank" rel="noopener noreferrer" className="hover:text-neon">WhatsApp {STORE.whatsapp}</TrackedA></li>
             <li><a href={STORE.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-neon">{STORE.instagramHandle}</a></li>
           </ul>
         </div>
       </div>
-      <div className="wrap relative border-t border-white/10 py-6 flex flex-col md:flex-row gap-4 md:items-center justify-between text-xs text-white/50">
+      <div className="wrap relative border-t border-white/10 pt-6 pb-[calc(var(--tabbar-h)+24px)] lg:pb-6 flex flex-col md:flex-row gap-4 md:items-center justify-between text-xs text-white/50">
         <p>© {new Date().getFullYear()} {STORE.legalName} · CNPJ {STORE.cnpj}</p>
         <div className="flex flex-wrap items-center gap-3 text-white/70"><PaymentIcons /><span>Pagamento processado pela Pagar.me</span></div>
       </div>

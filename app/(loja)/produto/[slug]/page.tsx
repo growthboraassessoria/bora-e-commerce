@@ -31,13 +31,13 @@ export default async function ProductPage({ params }: PageProps<"/produto/[slug]
   return (
     <>
       <JsonLd data={[productLd(p, category?.name), breadcrumbLd(crumbs)]} />
-      <div className="wrap pt-6 pb-24 lg:pb-0">
-        <nav className="text-sm text-ink-3 mb-6" aria-label="Trilha">
+      <div className="wrap pt-0 sm:pt-6 pb-24 lg:pb-0">
+        <nav className="hidden lg:block text-sm text-ink-3 mb-6" aria-label="Trilha">
           <Link href="/" className="hover:text-ink">Início</Link> / {category ? <><Link href={`/colecao/${category.slug}`} className="hover:text-ink">{category.name}</Link> / </> : null}<span className="text-ink">{p.name}</span>
         </nav>
         <ProductView p={p} />
       </div>
-      <section className="wrap mt-24">
+      <section className="wrap mt-16 lg:mt-24">
         <p className="eyebrow">Combina com</p>
         <h2 className="display text-[clamp(32px,4.4vw,56px)] mt-2">Complete o uniforme</h2>
         <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10">

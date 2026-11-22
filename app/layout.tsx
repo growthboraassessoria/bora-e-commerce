@@ -3,6 +3,7 @@ import { altone } from "./fonts";
 import { SITE_URL, INDEXABLE, DEMO } from "@/lib/config";
 import CartDrawer from "@/components/ui/CartDrawer";
 import RouteSticker from "@/components/ui/RouteSticker";
+import { TouchActive } from "@/components/ui/ios";
 import Analytics from "@/components/analytics/Analytics";
 import StoreGate from "@/components/store/StoreGate";
 import PaymentRulesProvider from "@/components/store/PaymentRulesProvider";
@@ -42,6 +43,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </StoreGate>
         </PaymentRulesProvider>
         <Analytics />
+        <TouchActive />
       </body>
     </html>
   );

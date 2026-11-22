@@ -41,19 +41,19 @@ export default async function CollectionPage({ params, searchParams }: PageProps
   return (
     <>
       <JsonLd data={[breadcrumbLd([{ name: "Início", path: "/" }, { name: category.name, path: `/colecao/${slug}` }]), itemListLd(category.name, products)]} />
-      <section className="wrap pt-6">
-        <div className="relative overflow-hidden rounded-[32px] bg-ink text-white min-h-[300px] sm:min-h-[360px] flex items-end">
+      <section className="wrap pt-4 lg:pt-6">
+        <div className="relative overflow-hidden rounded-[28px] lg:rounded-[32px] bg-ink text-white min-h-[260px] sm:min-h-[360px] flex items-end">
           <Image src={category.image} alt="" fill priority sizes="100vw" className="object-cover opacity-80" />
           <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/30 to-black/10" />
-          <div className="relative p-7 sm:p-12 max-w-2xl">
-            <nav className="text-sm text-white/60" aria-label="Trilha"><Link href="/" className="hover:text-white">Início</Link> / <span className="text-white">{category.name}</span></nav>
-            <h1 className="display text-[clamp(44px,7vw,104px)] mt-3">{category.name}</h1>
-            <p className="mt-3 text-white/80 text-lg">{category.description}</p>
+          <div className="relative p-6 sm:p-12 max-w-2xl">
+            <nav className="hidden lg:block text-sm text-white/60" aria-label="Trilha"><Link href="/" className="hover:text-white">Início</Link> / <span className="text-white">{category.name}</span></nav>
+            <h1 className="display text-[clamp(40px,7vw,104px)] lg:mt-3">{category.name}</h1>
+            <p className="mt-3 text-white/80 text-[17px] sm:text-lg leading-snug">{category.description}</p>
           </div>
         </div>
-        <div className="mt-6 flex gap-2 overflow-x-auto no-scrollbar">
+        <div className="mt-5 lg:mt-6 flex gap-2 overflow-x-auto no-scrollbar snap-x -mx-[var(--gutter)] px-[var(--gutter)] scroll-px-[var(--gutter)]">
           {[{ slug: "todos", name: "Tudo" }, ...categories].map((c) => (
-            <Link key={c.slug} href={`/colecao/${c.slug}`} className={`h-10 px-5 rounded-full text-sm font-bold inline-flex items-center shrink-0 ${c.slug === slug ? "bg-neon text-black" : "bg-sand hover:bg-sand-2"}`}>{c.name}</Link>
+            <Link key={c.slug} href={`/colecao/${c.slug}`} className={`pressable h-11 lg:h-10 px-5 rounded-full text-[15px] lg:text-sm font-bold inline-flex items-center shrink-0 snap-start ${c.slug === slug ? "bg-neon text-black" : "bg-sand hover:bg-sand-2"}`}>{c.name}</Link>
           ))}
         </div>
       </section>

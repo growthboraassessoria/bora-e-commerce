@@ -35,7 +35,7 @@ export default function OrderSteps({ steps, hints = {}, variant = "full", classN
             </span>
             <div className="min-w-0 pt-1 sm:pt-0">
               <p className={`sm:mt-3 text-[13px] font-bold leading-tight pr-2 hyphens-auto [overflow-wrap:anywhere] ${s.done || s.current ? "" : "text-ink-3"}`}>{s.label}</p>
-              {d ? <p className="mt-0.5 text-[11px] sm:text-xs text-ink-3 leading-snug pr-2">{d}</p> : null}
+              {d ? <p className="mt-0.5 text-xs text-ink-3 leading-snug pr-2">{d}</p> : null}
             </div>
           </li>
         );

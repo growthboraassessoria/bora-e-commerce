@@ -18,15 +18,15 @@ export default async function SearchPage({ searchParams }: PageProps<"/busca">) 
   const results = q ? await queryProducts({ q }) : [];
   const suggestions = await queryProducts({ sort: "destaques" });
   return (
-    <section className="wrap pt-10" data-search-count={q ? results.length : undefined}>
+    <section className="wrap pt-6 lg:pt-10" data-search-count={q ? results.length : undefined}>
       <form action="/busca" role="search" className="max-w-2xl" data-track-form="busca">
         <label className="relative block">
           <span className="sr-only">Buscar</span>
           <SearchIcon className="absolute left-5 top-1/2 -translate-y-1/2 text-ink-3" />
-          <input name="q" type="search" enterKeyHint="search" defaultValue={q} placeholder="Buscar na loja" className="input h-16 rounded-full pl-14 text-lg bg-sand border-transparent" />
+          <input name="q" type="search" enterKeyHint="search" autoComplete="off" autoCorrect="off" defaultValue={q} placeholder="Buscar na loja" className="input h-14 sm:h-16 rounded-full pl-14 text-lg bg-sand border-transparent" />
         </label>
       </form>
-      <h1 className="display text-[clamp(32px,5vw,64px)] mt-10">
+      <h1 className="display text-[clamp(32px,5vw,64px)] mt-8 sm:mt-10 [overflow-wrap:anywhere]">
         {q ? <>{results.length} {results.length === 1 ? "resultado" : "resultados"} para <span className="mark">“{q}”</span></> : "O que você procura?"}
       </h1>
       {q && results.length === 0 ? <p className="mt-4 text-ink-2">Tente “camiseta”, “corta-vento” ou “meia”. Ou veja <Link href="/colecao/todos" className="underline">toda a coleção</Link>.</p> : null}

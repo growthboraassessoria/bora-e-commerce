@@ -56,7 +56,7 @@ export default function PresaleBuy({ name, priceCents, sizes, open = true, produ
         </div>
         <button type="button" disabled={soldOut} onClick={() => add(true)} className="btn btn-neon btn-lg flex-1 min-w-0 !px-5">{!open ? "Pré-venda encerrada" : soldOut ? "Esgotado" : <><span className="max-[369px]:hidden">Garantir na pré-venda</span><span className="min-[370px]:hidden">Garantir a minha</span></>}</button>
       </div>
-      <button type="button" disabled={soldOut} onClick={() => add(false)} className="mt-3 text-sm font-bold underline underline-offset-4 inline-flex items-center gap-1.5">
+      <button type="button" disabled={soldOut} onClick={() => add(false)} className="mt-1 min-h-11 text-sm font-bold underline underline-offset-4 inline-flex items-center gap-1.5 text-left">
         {added ? (<><CheckIcon size={14} /> {name} na sacola</>) : "Adicionar à sacola e continuar escolhendo"}
       </button>
       </>)}

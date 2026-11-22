@@ -23,7 +23,7 @@ export default function Newsletter({ dark = false }: { dark?: boolean }) {
         <>
           <label className="flex-1">
             <span className="sr-only">Seu e-mail</span>
-            <input name="email" type="email" required placeholder="Seu melhor e-mail" className={`input rounded-full h-[52px] ${dark ? "bg-white/10 border-white/20 text-white placeholder:text-white/50" : ""}`} aria-invalid={state === "error"} />
+            <input name="email" type="email" inputMode="email" autoComplete="email" autoCapitalize="none" autoCorrect="off" spellCheck={false} enterKeyHint="send" required placeholder="Seu melhor e-mail" className={`input rounded-full h-[52px] ${dark ? "bg-white/10 border-white/20 text-white placeholder:text-white/50" : ""}`} aria-invalid={state === "error"} />
           </label>
           <button className="btn btn-neon" disabled={state === "sending"}>{state === "sending" ? "Enviando…" : "Quero"}</button>
         </>

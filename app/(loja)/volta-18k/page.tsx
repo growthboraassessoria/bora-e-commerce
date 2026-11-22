@@ -115,8 +115,8 @@ export default async function PresalePage() {
             </h1>
             <p className="mt-6 max-w-lg text-lg sm:text-xl text-white/75 leading-relaxed">{sub}</p>
             <div className="mt-8 flex flex-wrap gap-3 pointer-events-auto">
-              <a href="#pecas" className="btn btn-neon btn-lg">{cta} <ArrowIcon size={18} /></a>
-              <a href="#retirada" className="btn btn-lg text-white ring-1 ring-white/25 hover:ring-white">Onde retirar</a>
+              <a href="#pecas" className="btn btn-neon btn-lg max-sm:w-full">{cta} <ArrowIcon size={18} /></a>
+              <a href="#retirada" className="btn btn-lg max-sm:w-full text-white ring-1 ring-white/25 hover:ring-white">Onde retirar</a>
             </div>
           </div>
 
@@ -186,11 +186,11 @@ export default async function PresalePage() {
               <ul className="mt-5 grid grid-cols-2 gap-2">
                 {b.p.highlights.map((h) => <li key={h} className="flex items-center gap-2 text-sm font-bold"><span className="size-5 rounded-full bg-neon grid place-items-center shrink-0"><CheckIcon size={12} /></span>{h}</li>)}
               </ul>
-              <div className="mt-8 rounded-[28px] ring-1 ring-line p-6">
+              <div className="mt-8 rounded-[28px] ring-1 ring-line p-5 sm:p-6">
                 <PresaleBuy name={b.p.name} productId={b.p.id} priceCents={b.p.priceCents} sizes={sizesOf(b.p)} open={open} />
                 <PaymentIcons className="mt-5" />
               </div>
-              <Link href={`/produto/${b.p.slug}`} className="mt-4 inline-block text-sm text-ink-3 underline underline-offset-4">Ficha completa e guia de medidas</Link>
+              <Link href={`/produto/${b.p.slug}`} className="mt-2 inline-flex items-center min-h-11 text-sm text-ink-3 underline underline-offset-4">Ficha completa e guia de medidas</Link>
             </div>
           </div>
         ))}
@@ -208,7 +208,7 @@ export default async function PresalePage() {
               <div><dt className="text-xs font-bold uppercase tracking-widest text-white/50">Quando</dt><dd className="mt-2 font-bold text-lg leading-snug">{eventDate ? `Dia ${eventDate}` : "No dia da prova"}<br /><span className="font-normal text-white/60 text-base">Abertura às {PICKUP.opens} · encerramento às {PICKUP.closes}</span></dd></div>
               <div className="sm:col-span-2"><dt className="text-xs font-bold uppercase tracking-widest text-white/50">O que levar</dt><dd className="mt-2 text-white/80">{PICKUP.bring}</dd></div>
             </dl>
-            <a href={PICKUP.mapsUrl} target="_blank" rel="noopener noreferrer" className="btn btn-neon btn-lg mt-8">Abrir no mapa <ArrowIcon size={18} /></a>
+            <a href={PICKUP.mapsUrl} target="_blank" rel="noopener noreferrer" className="btn btn-neon btn-lg mt-8 max-sm:w-full">Abrir no mapa <ArrowIcon size={18} /></a>
           </div>
           <div className="relative min-h-[380px] lg:min-h-[520px] bg-[#0f0f0f]">
             <PickupMap address={PICKUP.address} query={PICKUP.query} label="Retirada BORA" />
@@ -238,7 +238,7 @@ export default async function PresalePage() {
         <div className="mt-8 border-t border-line divide-y divide-line">
           {faq.map((f) => (
             <details key={f.q} className="group py-6">
-              <summary className="flex items-center justify-between gap-6 cursor-pointer list-none text-lg font-bold">{f.q}<PlusIcon className="shrink-0 transition-transform group-open:rotate-45" /></summary>
+              <summary className="flex items-center justify-between gap-6 cursor-pointer list-none text-[17px] sm:text-lg font-bold">{f.q}<PlusIcon className="shrink-0 transition-transform group-open:rotate-45" /></summary>
               <p className="mt-3 text-ink-2 leading-relaxed">{f.a}</p>
             </details>
           ))}
@@ -254,7 +254,7 @@ export default async function PresalePage() {
             <p className="display text-[clamp(44px,7vw,110px)] mt-3">{finalTitle}</p>
           </div>
           <div className="relative flex flex-wrap gap-3">
-            <a href="#pecas" className="btn btn-primary btn-lg">{cta}</a>
+            <a href="#pecas" className="btn btn-primary btn-lg max-sm:w-full">{cta}</a>
             <p className="w-full text-sm">A partir de {brl(Math.min(shirt.priceCents, cropped.priceCents))}{pixBadge(rules) ? ` · ${pixBadge(rules)}` : ""} · retirada no evento</p>
           </div>
         </div>

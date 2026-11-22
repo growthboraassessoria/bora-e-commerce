@@ -34,10 +34,18 @@
 :root {
   --gutter: clamp(16px, 4vw, 64px);
   --header-h: 64px;
+  /* Barra de abas do celular (estilo iOS): 56 px + a área segura do iPhone (a "barrinha" de baixo). */
+  --tabbar-h: calc(56px + env(safe-area-inset-bottom));
   color-scheme: light;
 }
+/* No celular e no tablet o cabeçalho é mais baixo, como a barra de navegação do iOS. */
+@media (max-width: 1023.98px) {
+  :root { --header-h: 52px; }
+}
 
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+/* Toque sem atraso e sem zoom de duplo toque nos controles. */
+a, button, summary, label, [role="button"], [role="radio"], [role="tab"] { touch-action: manipulation; }
 /* Âncoras (#pecas, #retirada, etapas do checkout) param abaixo do cabeçalho fixo. */
 [id] { scroll-margin-top: calc(var(--header-h) + 48px); }
 body {
@@ -50,7 +58,8 @@ body {
 ::selection { background: var(--color-neon); color: #000; }
 
 @layer components {
-  .wrap { width: 100%; max-width: 1480px; margin-inline: auto; padding-inline: var(--gutter); }
+  /* Respeita a área segura do iPhone deitado (notch dos lados). */
+  .wrap { width: 100%; max-width: 1480px; margin-inline: auto; padding-left: max(var(--gutter), env(safe-area-inset-left)); padding-right: max(var(--gutter), env(safe-area-inset-right)); }
   .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-3); }
   .display { font-weight: 900; letter-spacing: -0.035em; line-height: 0.92; text-transform: uppercase; }
   .mark { background: linear-gradient(transparent 58%, var(--color-neon) 58%, var(--color-neon) 92%, transparent 92%); padding-inline: 0.06em; }
@@ -91,6 +100,16 @@ body {
   .chip-ink { background: var(--color-ink); color: #fff; }
   .chip-soft { background: var(--color-sand); color: var(--color-ink-2); }
 
+  /* ---------- Peças no jeito iOS ---------- */
+  /* Toque: o elemento "afunda" de leve enquanto o dedo está em cima. */
+  .pressable { transition: transform 0.18s var(--ease-out-expo), opacity 0.18s, background-color 0.18s; }
+  .pressable:active { transform: scale(0.97); opacity: 0.85; }
+  /* Linha de lista (estilo Ajustes): fundo escurece de leve ao tocar. */
+  .row-press { transition: background-color 0.15s; }
+  .row-press:active { background-color: var(--color-sand-2); }
+  /* Alça das folhas (sheets) que sobem de baixo. */
+  .sheet-grabber { display: block; width: 40px; height: 5px; border-radius: 999px; background: rgba(10, 10, 10, 0.18); margin-inline: auto; }
+
   .card { background: #fff; border-radius: 24px; box-shadow: inset 0 0 0 1px var(--color-line); }
   .prose-bora h2 { font-size: 22px; font-weight: 700; margin-top: 40px; margin-bottom: 12px; letter-spacing: -0.01em; }
   .prose-bora h3 { font-size: 17px; font-weight: 700; margin-top: 24px; margin-bottom: 8px; }
@@ -104,12 +123,27 @@ body {
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
+/* Lista agrupada estilo Ajustes do iOS nos formulários (só no celular): uma caixa branca com linhas finas entre os campos.
+   O truque do gap de 1 px com fundo cinza desenha as linhas, inclusive entre campos lado a lado (Validade | CVV). */
+@media (max-width: 639.98px) {
+  .ios-group { gap: 1px !important; background: var(--color-line); border-radius: 16px; overflow: hidden; box-shadow: 0 0 0 1px var(--color-line); }
+  .ios-group > .field { position: relative; background: #fff; padding: 10px 16px 9px; gap: 1px; min-height: 64px; align-content: center; transition: background-color 0.15s; }
+  .ios-group > .field > span { font-size: 13px; }
+  .ios-group .input { height: 30px; border: 0; padding: 0; border-radius: 0; background: transparent; font-size: 17px; box-shadow: none !important; }
+  /* Campo em foco: um traço verde na borda, como marca-texto. */
+  .ios-group > .field:focus-within::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; background: var(--color-neon-2); }
+  .ios-group > .field:has(.input[aria-invalid="true"]) { background: #fdf3f2; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
 }
 
 /* ---------- efeitos ---------- */
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sheet-up { from { transform: translateY(100%); } to { transform: none; } }
+.animate-sheet { animation: sheet-up 0.45s var(--ease-out-expo) both; }
+@media (min-width: 640px) { .animate-sheet { animation: rise 0.5s var(--ease-out-expo) both; } }
 @keyframes processing-draw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
 @keyframes processing-bar { from { width: 0%; } to { width: 100%; } }
 .processing-draw { stroke-dashoffset: 100; animation: processing-draw 5s cubic-bezier(.45,.05,.35,1) forwards; }

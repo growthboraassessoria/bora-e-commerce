@@ -45,13 +45,14 @@ export default function PasswordForm() {
             data-form-type="other"
             data-lpignore="true"
             autoFocus
+            enterKeyHint="go"
             required
             className="input h-14 pr-24 text-lg"
             aria-invalid={state.error ? true : undefined}
             aria-describedby={state.error ? "senha-erro" : undefined}
             placeholder="••••••••"
           />
-          <button type="button" onClick={() => setShow((s) => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-bold underline underline-offset-4">
+          <button type="button" onClick={() => setShow((s) => !s)} className="absolute right-1 top-1/2 -translate-y-1/2 h-11 px-3 text-sm font-bold underline underline-offset-4">
             {show ? "Esconder" : "Mostrar"}
           </button>
         </span>

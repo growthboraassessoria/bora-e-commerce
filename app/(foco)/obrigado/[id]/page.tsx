@@ -52,7 +52,7 @@ export default async function ThankYouPage({ params, searchParams }: PageProps<"
       />
 
       {/* ---------- Topo: mensagem + passe de retirada ---------- */}
-      <section className="wrap pt-8 pb-12 lg:pt-14 lg:pb-16 grid [&>*]:min-w-0 lg:grid-cols-[1fr_minmax(0,500px)] gap-10 lg:gap-20 items-center">
+      <section className="wrap pt-6 pb-12 lg:pt-14 lg:pb-16 grid [&>*]:min-w-0 lg:grid-cols-[1fr_minmax(0,500px)] gap-10 lg:gap-20 items-center">
         <div>
           <p className={`inline-flex items-center gap-2 h-8 pl-1.5 pr-3.5 rounded-full text-xs font-black uppercase tracking-[0.08em] ${paid ? "bg-neon text-black" : canceled ? "bg-danger/10 text-danger" : "bg-sand text-ink-2"}`}>
             <span className={`size-5 rounded-full grid place-items-center ${paid ? "bg-black text-neon" : canceled ? "bg-danger text-white" : "bg-white"}`}>
@@ -62,11 +62,11 @@ export default async function ThankYouPage({ params, searchParams }: PageProps<"
             <span className="opacity-50">·</span> {order.code}
           </p>
 
-          <h1 className="display text-[clamp(44px,7vw,104px)] mt-6">
+          <h1 className="display text-[clamp(42px,7vw,104px)] mt-5 sm:mt-6">
             {paid ? <>Valeu, {first}!<br /><span className="mark">letz BORA.</span></> : canceled ? <>Pedido<br />cancelado.</> : <>Quase lá,<br /><span className="mark">{first}.</span></>}
           </h1>
 
-          <p className="mt-6 text-lg text-ink-2 max-w-[34rem] leading-relaxed">
+          <p className="mt-5 sm:mt-6 text-[17px] sm:text-lg text-ink-2 max-w-[34rem] leading-relaxed [overflow-wrap:anywhere]">
             {delivered ? (
               <>Você retirou suas peças em {time(order.pickedUpAt ?? null)}. Agora é treinar e postar com <strong className="text-ink">#letzBORA</strong>.</>
             ) : paid ? (
@@ -80,14 +80,14 @@ export default async function ThankYouPage({ params, searchParams }: PageProps<"
 
           <div className="mt-8 flex flex-wrap gap-3">
             {pending && order.paymentProvider === "simulado" ? (
-              <Link href={`/pagamento/${order.id}?t=${t}`} className="btn btn-primary btn-lg">Ir para o pagamento <ArrowIcon size={18} /></Link>
+              <Link href={`/pagamento/${order.id}?t=${t}`} className="btn btn-primary btn-lg max-sm:w-full">Ir para o pagamento <ArrowIcon size={18} /></Link>
             ) : null}
             {canceled ? (
-              <Link href={PRESALE.path} className="btn btn-primary btn-lg">Voltar para a pré-venda <ArrowIcon size={18} /></Link>
+              <Link href={PRESALE.path} className="btn btn-primary btn-lg max-sm:w-full">Voltar para a pré-venda <ArrowIcon size={18} /></Link>
             ) : (
-              <a href={PICKUP.mapsUrl} target="_blank" rel="noopener noreferrer" className={`btn btn-lg ${pending ? "btn-ghost" : "btn-primary"}`}>Ver rota até a retirada <ArrowIcon size={18} /></a>
+              <a href={PICKUP.mapsUrl} target="_blank" rel="noopener noreferrer" className={`btn btn-lg max-sm:w-full ${pending ? "btn-ghost" : "btn-primary"}`}>Ver rota até a retirada <ArrowIcon size={18} /></a>
             )}
-            <Link href="/colecao/todos" className="btn btn-ghost btn-lg">Continuar comprando</Link>
+            <Link href="/colecao/todos" className="btn btn-ghost btn-lg max-sm:w-full">Continuar comprando</Link>
           </div>
           <p className="mt-5 text-sm text-ink-2">
             Acompanhe em <Link href="/meus-pedidos" className="font-bold text-ink underline underline-offset-4">Meus pedidos</Link>: é só o CPF e o celular da compra.
@@ -174,10 +174,10 @@ export default async function ThankYouPage({ params, searchParams }: PageProps<"
 
       {/* ---------- Pedido e retirada ---------- */}
       <section className="bg-sand">
-        <div className="wrap py-12 lg:py-16 grid [&>*]:min-w-0 lg:grid-cols-[1.15fr_1fr] gap-6 lg:gap-8 items-start">
+        <div className="wrap pt-10 pb-[max(48px,env(safe-area-inset-bottom))] lg:py-16 grid [&>*]:min-w-0 lg:grid-cols-[1.15fr_1fr] gap-6 lg:gap-8 items-start">
           <div className="card p-6 sm:p-8">
-            <div className="flex items-baseline justify-between gap-4">
-              <h2 className="text-xl font-black uppercase tracking-tight">Seu pedido</h2>
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4">
+              <h2 className="text-xl font-black uppercase tracking-tight shrink-0">Seu pedido</h2>
               <p className="text-sm text-ink-3"><span className="font-mono font-bold text-ink">{order.code}</span> · #{order.number} · {time(order.createdAt)}</p>
             </div>
             <ul className="mt-5 divide-y divide-line">
