@@ -12,8 +12,10 @@ import { getPaymentRules } from "./settings";
 // O Mercado Pago ficou só como código de referência (não é mais escolhido).
 // Trava: com a loja em demonstração (NEXT_PUBLIC_SALES_DEMO=1, faixa "nada é cobrado"), o pagamento é sempre simulado,
 // mesmo com a chave da Pagar.me cadastrada. Tirar a demonstração liga a cobrança real.
+// Produção (VERCEL_ENV=production): sempre Pagar.me, nunca simulado. Se faltar a chave, o pagamento falha com
+// "indisponível" em vez de aprovar de mentira.
 export const paymentProvider = (): Order["paymentProvider"] =>
-  pagarmeEnabled() && process.env.NEXT_PUBLIC_SALES_DEMO !== "1" ? "pagarme" : "simulado";
+  process.env.VERCEL_ENV === "production" ? "pagarme" : pagarmeEnabled() && process.env.NEXT_PUBLIC_SALES_DEMO !== "1" ? "pagarme" : "simulado";
 
 const MP = "https://api.mercadopago.com";
 

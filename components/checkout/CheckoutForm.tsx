@@ -509,7 +509,7 @@ export default function CheckoutForm({ error: initialError, suggestions, initial
                 ) : (
                   <>
                     <p className="font-bold">Em até {inst.n}x sem juros</p>
-                    <div className="mt-4"><CardFields card={card} setCard={setCard} billing={billing} setBilling={setBilling} errors={errors} total={total} maxInstallments={inst.n} simulated={!cardLive} /></div>
+                    <div className="mt-4"><CardFields card={card} setCard={setCard} billing={billing} setBilling={setBilling} errors={errors} total={total} maxInstallments={inst.n} simulated={gateway === "simulado"} /></div>
                   </>
                 )}
                 <PaymentIcons className="mt-4" only={method === "pix" ? ["Pix"] : rules.brands.map((b) => BRAND_NAMES[b])} />

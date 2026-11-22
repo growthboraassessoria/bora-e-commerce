@@ -28,4 +28,5 @@ export const SALES_OPEN = process.env.NEXT_PUBLIC_SALES_OPEN ? process.env.NEXT_
 export const INDEXABLE = process.env.NEXT_PUBLIC_SITE_INDEXABLE === "1";
 export const waLink = (msg: string) => `${STORE.whatsappUrl}?text=${encodeURIComponent(msg)}`;
 /** Demonstração: compra aberta com pagamento simulado. Mostra a faixa "nada é cobrado" no topo. */
-export const DEMO = process.env.NEXT_PUBLIC_SALES_DEMO === "1";
+// Faixa de demonstração: nunca na produção (VERCEL_ENV=production), mesmo que a variável fique esquecida.
+export const DEMO = process.env.NEXT_PUBLIC_SALES_DEMO === "1" && process.env.NEXT_PUBLIC_VERCEL_ENV !== "production" && process.env.VERCEL_ENV !== "production";
