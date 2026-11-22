@@ -1,12 +1,13 @@
 import { SALES_OPEN } from "@/lib/config";
 import Image from "next/image";
 import type { Product } from "@/lib/types";
+import { simpleOptions } from "@/lib/options";
 import Price from "./Price";
 import QuickAdd from "./QuickAdd";
 import { TrackedLink } from "./Tracked";
 
 export default function ProductCard({ p, priority = false }: { p: Product; priority?: boolean }) {
-  const colors = [...new Map(p.variants.map((v) => [v.color, v.colorHex])).entries()];
+  const colors = [...new Map(p.variants.filter((v) => v.color).map((v) => [v.color, v.colorHex])).entries()];
   const soldOut = p.variants.every((v) => v.stock <= 0);
   const lowStock = !soldOut && p.variants.reduce((s, v) => s + v.stock, 0) <= 10;
   const firstColor = p.variants[0]?.color;
@@ -26,7 +27,7 @@ export default function ProductCard({ p, priority = false }: { p: Product; prior
           {p.badges.slice(0, 2).map((b, i) => <span key={b} className={`chip ${i === 0 ? "chip-neon" : "chip-ink"}`}>{b}</span>)}
           {lowStock ? <span className="chip bg-white text-ink">Últimas peças</span> : null}
         </div>
-        {SALES_OPEN && !soldOut ? <QuickAdd sizes={sizes} single={p.variants.length === 1} item={{ id: p.id, name: p.name, priceCents: p.priceCents }} /> : null}
+        {SALES_OPEN && !soldOut && simpleOptions(p) ? <QuickAdd sizes={sizes} single={p.variants.length === 1} item={{ id: p.id, name: p.name, priceCents: p.priceCents }} /> : null}
       </div>
       <div className="pt-4 flex items-start justify-between gap-3">
         <div className="min-w-0">

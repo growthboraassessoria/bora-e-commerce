@@ -35,8 +35,8 @@ export default async function CollectionPage({ params, searchParams }: PageProps
     getCategories(),
   ]);
   const scope = categorySlug ? all.filter((p) => inCategory(p, categorySlug)) : all;
-  const colors = [...new Map(scope.flatMap((p) => p.variants.map((v) => [v.color, { name: v.color, hex: v.colorHex }]))).values()];
-  const sizes = [...new Set(scope.flatMap((p) => p.variants.map((v) => v.size)))].sort((a, b) => SIZE_ORDER.indexOf(a) - SIZE_ORDER.indexOf(b));
+  const colors = [...new Map(scope.flatMap((p) => p.variants.filter((v) => v.color).map((v) => [v.color, { name: v.color, hex: v.colorHex }]))).values()];
+  const sizes = [...new Set(scope.flatMap((p) => p.variants.map((v) => v.size).filter(Boolean)))].sort((a, b) => SIZE_ORDER.indexOf(a) - SIZE_ORDER.indexOf(b));
 
   return (
     <>

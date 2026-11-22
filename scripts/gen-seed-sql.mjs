@@ -19,9 +19,11 @@ writeFileSync(new URL("../supabase/seed.sql", import.meta.url), out.join("\n") +
 console.log("supabase/seed.sql gerado:", out.length, "linhas");
 
 // Mesmo catálogo em JSON: o BORA OS lê este arquivo quando roda ligado à loja local (LOJA_LOCAL_DIR), sem banco.
+// Produto completo (mesmo formato de lib/types.ts) e coleções: o OS mostra e edita o cadastro inteiro (Loja → Produtos).
 const json = {
-  products: PRODUCTS.map((p) => ({ id: p.id, slug: p.slug, name: p.name, priceCents: p.priceCents, status: p.status ?? "active", position: p.position, image: p.images[0]?.url ?? "",
-    variants: p.variants.map((v, n) => ({ id: v.id, sku: v.sku, color: v.color, size: v.size, priceCents: v.priceCents ?? null, stock: v.stock, position: n })) })),
+  products: PRODUCTS.map((p) => ({ ...p, status: p.status ?? "active", image: p.images[0]?.url ?? "",
+    variants: p.variants.map((v, n) => ({ ...v, priceCents: v.priceCents ?? null, position: n })) })),
+  categories: CATEGORIES,
   coupons: COUPONS.map((c) => ({ code: c.code, kind: c.kind, value: c.value, minSubtotalCents: c.minSubtotalCents, active: c.active, expiresAt: c.expiresAt ?? null, maxUses: c.maxUses ?? null })),
 };
 writeFileSync(new URL("../supabase/seed.json", import.meta.url), JSON.stringify(json, null, 2) + "\n");

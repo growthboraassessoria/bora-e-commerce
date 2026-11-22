@@ -7,6 +7,7 @@ import type { Address, Order, OrderStatus, PricedLine, ShippingOption } from "..
 import type { Totals } from "../pricing";
 import { codeFromId, newOrderCode } from "../orderCode";
 import { recalledOrder } from "./order-cookie";
+import { mergePaymentData, type PaymentData, type PaymentEvent } from "../payment-data";
 
 const SECRET = () => process.env.ORDER_LINK_SECRET || (process.env.NODE_ENV === "production" ? "" : "dev-only-secret");
 
@@ -127,6 +128,9 @@ type OrderRow = {
   coupon_code: string | null; payment_method: Order["paymentMethod"]; payment_provider: Order["paymentProvider"]; payment_id: string | null;
   code: string; created_at: string; paid_at: string | null; picked_up_at: string | null; picked_up_by: string | null;
   canceled_at: string | null; refunded_at: string | null;
+  payment_data?: Order["paymentData"];
+  // Etapas (0005). Antes da migration, não vêm.
+  processing_at?: string | null; packed_at?: string | null; shipped_at?: string | null;
   pickup_name: string | null; pickup_cpf: string | null; pickup_phone: string | null;
   order_items: { variant_id: string; product_id: string; name: string; variant_label: string; image: string; unit_cents: number; quantity: number }[];
 };
@@ -147,9 +151,10 @@ function fromOrderRow(r: OrderRow): Order {
     id: r.id, number: r.number, status: r.status, email: r.email, name: r.name, phone: r.phone, cpf: r.cpf, address: r.address,
     shippingMethod: r.shipping_method, shippingCents: r.shipping_cents, subtotalCents: r.subtotal_cents, discountCents: r.discount_cents,
     totalCents: r.total_cents, couponCode: r.coupon_code, paymentMethod: r.payment_method, paymentProvider: r.payment_provider,
-    paymentId: r.payment_id, createdAt: r.created_at, paidAt: r.paid_at, code: r.code,
+    paymentId: r.payment_id, paymentData: r.payment_data ?? null, createdAt: r.created_at, paidAt: r.paid_at, code: r.code,
     pickupName: r.pickup_name, pickupCpf: r.pickup_cpf, pickupPhone: r.pickup_phone,
     pickedUpAt: r.picked_up_at, pickedUpBy: r.picked_up_by, canceledAt: r.canceled_at, refundedAt: r.refunded_at,
+    processingAt: r.processing_at ?? null, packedAt: r.packed_at ?? null, shippedAt: r.shipped_at ?? null,
     items: r.order_items.map((i) => ({ variantId: i.variant_id, productId: i.product_id, name: i.name, variantLabel: i.variant_label, image: i.image, unitCents: i.unit_cents, quantity: i.quantity })),
   };
 }
@@ -163,6 +168,26 @@ export async function setPaymentRef(id: string, paymentId: string) {
     return;
   }
   await db().from("orders").update({ payment_id: paymentId }).eq("id", id);
+}
+
+/** Guarda o resumo do pagamento (Pagar.me ou simulado) e soma o evento ao histórico. Falha aqui nunca derruba a compra. */
+export async function savePaymentData(id: string, next: Partial<PaymentData> | null, event?: PaymentEvent | null) {
+  try {
+    if (storeMode() === "local") {
+      await withLocalDb((d) => {
+        const o = d.orders.find((x) => x.id === id);
+        if (o) o.paymentData = mergePaymentData(o.paymentData, next, event);
+      });
+      return;
+    }
+    const { data } = await db().from("orders").select("payment_data").eq("id", id).maybeSingle();
+    const merged = mergePaymentData((data?.payment_data as PaymentData | null) ?? null, next, event);
+    const { error } = await db().from("orders").update({ payment_data: merged }).eq("id", id);
+    if (error) throw error;
+  } catch (e) {
+    // Sem a migration 0033 (coluna payment_data) ou erro de rede: segue sem o resumo.
+    console.error("savePaymentData", (e as Error).message);
+  }
 }
 
 // Marca como pago. Se o pedido já tinha expirado, tenta reservar o estoque de novo; sem estoque, fica marcado para a equipe olhar.

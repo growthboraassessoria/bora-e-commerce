@@ -11,24 +11,42 @@ import { usePaymentRules } from "@/components/store/PaymentRulesProvider";
 import { installmentsFor, pixBadge, pixPct } from "@/lib/payment-rules";
 import SoonCTA from "@/components/ui/SoonCTA";
 import type { Product } from "@/lib/types";
+import { isColorOption, isSizeOption, optionsLabel, productOptions, variantOptions } from "@/lib/options";
 import { CheckIcon, MinusIcon, PlusIcon, ReturnIcon, ShieldIcon, TruckIcon } from "@/components/ui/Icons";
 import PaymentIcons from "@/components/ui/PaymentIcons";
 import { PICKUP, pickupWhen } from "@/lib/presale";
 import SizeGuide from "./SizeGuide";
 
-const SIZE_ORDER = ["PP", "P", "M", "G", "GG", "XGG", "34-38", "39-43", "U"];
-
+// Opções no padrão da Shopify: Cor em bolinhas, Tamanho no seletor grande e as demais (Estilo, Material...) em botões.
+// A variante é a combinação escolhida; preço, estoque e foto vêm dela.
 export default function ProductView({ p }: { p: Product }) {
   const router = useRouter();
-  const colors = useMemo(() => [...new Map(p.variants.map((v) => [v.color, v.colorHex])).entries()], [p]);
-  const [color, setColor] = useState(colors[0]?.[0] ?? "");
-  const sizes = useMemo(
-    () => p.variants.filter((v) => v.color === color).sort((a, b) => SIZE_ORDER.indexOf(a.size) - SIZE_ORDER.indexOf(b.size)),
-    [p, color],
-  );
-  const single = sizes.length === 1;
-  const [variantId, setVariantId] = useState<string | null>(single ? sizes[0].id : null);
-  const variant = p.variants.find((v) => v.id === variantId) ?? null;
+  const opts = useMemo(() => productOptions(p), [p]);
+  const vopts = useMemo(() => new Map(p.variants.map((v) => [v.id, variantOptions(v, opts)])), [p, opts]);
+  const colorOpt = opts.find((o) => isColorOption(o.name));
+  const sizeOpt = opts.find((o) => isSizeOption(o.name));
+  const otherOpts = opts.filter((o) => o !== colorOpt && o !== sizeOpt);
+  const fits = (vid: string, s: Record<string, string>, skip?: string) => Object.entries(s).every(([k, val]) => k === skip || vopts.get(vid)?.[k] === val);
+
+  // Começa na primeira cor/estilo com peça; o tamanho fica para o cliente escolher (a não ser que só exista um).
+  const [sel, setSel] = useState<Record<string, string>>(() => {
+    const first = p.variants.find((v) => v.stock > 0) ?? p.variants[0];
+    const fo = first ? variantOptions(first, opts) : {};
+    const out: Record<string, string> = {};
+    for (const o of opts) if (o !== sizeOpt || o.values.length === 1) out[o.name] = fo[o.name] ?? o.values[0]?.value ?? "";
+    return out;
+  });
+  const color = colorOpt ? sel[colorOpt.name] ?? "" : "";
+  const colors = useMemo(() => (colorOpt?.values ?? []).map((c) => [c.value, c.hex || p.variants.find((v) => v.color === c.value)?.colorHex || "#000000"] as const), [colorOpt, p]);
+  const sizeName = sizeOpt?.name ?? "";
+  const sizes = useMemo(() => (sizeOpt?.values ?? []).map((sv) => {
+    const v = p.variants.find((x) => vopts.get(x.id)?.[sizeName] === sv.value && fits(x.id, sel, sizeName));
+    return { id: v?.id ?? `sem:${sv.value}`, size: sv.value, stock: v?.stock ?? 0 };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }), [p, sizeOpt, sizeName, sel, vopts]);
+  const single = !sizeOpt || sizeOpt.values.length <= 1;
+  const variant = opts.every((o) => sel[o.name]) ? p.variants.find((v) => opts.every((o) => vopts.get(v.id)?.[o.name] === sel[o.name])) ?? null : null;
+  const label = variant ? optionsLabel(vopts.get(variant.id) ?? {}, opts) : "";
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [needSize, setNeedSize] = useState(false);
@@ -42,36 +60,45 @@ export default function ProductView({ p }: { p: Product }) {
   }, [p.id, p.name, p.priceCents, p.categorySlug]);
 
   const images = useMemo(() => {
-    const own = p.images.filter((i) => i.color === color);
-    const neutral = p.images.filter((i) => !i.color);
-    const others = p.images.filter((i) => i.color && i.color !== color);
-    return [...own, ...neutral, ...others];
-  }, [p, color]);
+    const ownVariant = variant?.image ? p.images.filter((i) => i.url === variant.image) : [];
+    const own = p.images.filter((i) => i.color === color && !ownVariant.includes(i));
+    const neutral = p.images.filter((i) => !i.color && !ownVariant.includes(i));
+    const others = p.images.filter((i) => i.color && i.color !== color && !ownVariant.includes(i));
+    const extra = variant?.image && !ownVariant.length ? [{ url: variant.image, alt: p.name }] : [];
+    return [...extra, ...ownVariant, ...own, ...neutral, ...others];
+  }, [p, color, variant]);
   const [active, setActive] = useState(0);
   const [zoom, setZoom] = useState<{ x: number; y: number } | null>(null);
 
   const price = variant?.priceCents ?? p.priceCents;
+  const compareAt = variant?.compareAtCents ?? p.compareAtCents;
   const rules = usePaymentRules();
   const inst = rules.cardEnabled ? installmentsFor(price, rules) : { n: 1, each: price };
   const pix = Math.round(price * (1 - pixPct(rules) / 100));
-  const soldOut = sizes.every((v) => v.stock <= 0);
+  // Esgotado na escolha atual (sem contar o tamanho, que o cliente ainda vai escolher).
+  const soldOut = p.variants.filter((v) => fits(v.id, sel, sizeName)).every((v) => v.stock <= 0);
   const maxQty = Math.min(10, variant?.stock ?? 10);
 
-  const pickColor = (c: string) => {
-    setColor(c);
-    setActive(0);
-    const next = p.variants.filter((v) => v.color === c);
-    const same = next.find((v) => v.size === variant?.size && v.stock > 0);
-    setVariantId(next.length === 1 ? next[0].id : same?.id ?? null);
+  const pick = (name: string, value: string) => {
+    const next = { ...sel, [name]: value };
+    // Troca de cor/estilo mantém o tamanho se ele ainda tiver peça; senão o cliente escolhe de novo.
+    if (sizeOpt && name !== sizeName && sizeOpt.values.length > 1 && next[sizeName]) {
+      const keep = p.variants.find((v) => fits(v.id, next) && v.stock > 0);
+      if (!keep) delete next[sizeName];
+    }
+    setSel(next);
+    if (colorOpt && name === colorOpt.name) setActive(0);
   };
+  const valueOut = (name: string, value: string) => !p.variants.some((v) => vopts.get(v.id)?.[name] === value && fits(v.id, sel, name) && v.stock > 0);
 
   const add = (goCheckout = false) => {
     if (!variant) {
+      if (single || sel[sizeName]) return; // combinação que não existe: nada a adicionar
       setNeedSize(true);
       document.getElementById("tamanhos")?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
-    cart.add(variant.id, qty, !goCheckout, { itemId: p.id, name: p.name, size: variant.size, priceCents: variant.priceCents ?? p.priceCents });
+    cart.add(variant.id, qty, !goCheckout, { itemId: p.id, name: p.name, size: label || variant.size, priceCents: variant.priceCents ?? p.priceCents });
     if (goCheckout) router.push("/checkout");
     else {
       setAdded(true);
@@ -125,7 +152,7 @@ export default function ProductView({ p }: { p: Product }) {
         <h1 className="display text-[clamp(36px,4.4vw,64px)] mt-3">{p.name}</h1>
         <div className="mt-5 flex items-baseline gap-3 flex-wrap">
           <span className="text-3xl font-black tracking-tight">{brl(price)}</span>
-          {p.compareAtCents ? <span className="text-lg text-ink-3 line-through">{brl(p.compareAtCents)}</span> : null}
+          {compareAt && compareAt > price ? <span className="text-lg text-ink-3 line-through">{brl(compareAt)}</span> : null}
         </div>
         <p className="mt-1 text-ink-2">
           {inst.n > 1 ? <>ou {inst.n}x de {brl(inst.each)} sem juros{rules.pixEnabled ? " · " : null}</> : null}
@@ -134,10 +161,10 @@ export default function ProductView({ p }: { p: Product }) {
 
         {colors.length > 1 ? (
           <div className="mt-8">
-            <p className="text-sm font-bold">Cor: <span className="font-normal text-ink-2">{color}</span></p>
+            <p className="text-sm font-bold">{colorOpt?.name ?? "Cor"}: <span className="font-normal text-ink-2">{color}</span></p>
             <div className="mt-3 flex gap-2.5">
               {colors.map(([name, hex]) => (
-                <button key={name} type="button" onClick={() => pickColor(name)} aria-label={name} aria-pressed={name === color} className={`size-11 rounded-full p-1 transition ${name === color ? "ring-2 ring-ink" : "ring-1 ring-line hover:ring-ink/40"}`}>
+                <button key={name} type="button" onClick={() => colorOpt && pick(colorOpt.name, name)} aria-label={name} aria-pressed={name === color} className={`size-11 rounded-full p-1 transition ${name === color ? "ring-2 ring-ink" : "ring-1 ring-line hover:ring-ink/40"}`}>
                   <span className="block size-full rounded-full ring-1 ring-black/10" style={{ background: hex }} />
                 </button>
               ))}
@@ -145,22 +172,41 @@ export default function ProductView({ p }: { p: Product }) {
           </div>
         ) : null}
 
+        {otherOpts.filter((o) => o.values.length > 1).map((o) => (
+          <div key={o.name} className="mt-7">
+            <p className="text-sm font-bold">{o.name}: <span className="font-normal text-ink-2">{sel[o.name] ?? ""}</span></p>
+            <div className="mt-3 flex flex-wrap gap-2" role="radiogroup" aria-label={o.name}>
+              {o.values.map((ov) => {
+                const on = sel[o.name] === ov.value;
+                const out = valueOut(o.name, ov.value);
+                return (
+                  <button key={ov.value} type="button" role="radio" aria-checked={on} onClick={() => pick(o.name, ov.value)}
+                    aria-label={`${ov.value}${out ? ", esgotado" : ""}`}
+                    className={`h-11 min-w-12 px-4 rounded-full text-sm font-bold transition ${on ? "bg-ink text-white" : "ring-1 ring-line hover:ring-ink"} ${out ? "text-ink-3 line-through decoration-2" : ""} ${on && out ? "!text-white/70" : ""}`}>
+                    {ov.value}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+
         {!single ? (
           <div className="mt-7" id="tamanhos">
             <div className="flex items-center justify-between">
-              <p className={`text-sm font-bold ${needSize && !variant ? "text-danger" : ""}`}>{needSize && !variant ? "Escolha um tamanho" : <>Tamanho{variant ? <span className="font-normal text-ink-2">: {variant.size}</span> : null}</>}</p>
+              <p className={`text-sm font-bold ${needSize && !variant ? "text-danger" : ""}`}>{needSize && !variant ? "Escolha um tamanho" : <>{sizeName || "Tamanho"}{sel[sizeName] ? <span className="font-normal text-ink-2">: {sel[sizeName]}</span> : null}</>}</p>
               <button type="button" onClick={() => setGuide(true)} className="text-sm font-bold underline underline-offset-4">Guia de medidas</button>
             </div>
             <div className="mt-3">
-              <SizePicker item={{ id: p.id, name: p.name }} sizes={sizes.map((v) => ({ id: v.id, size: v.size, stock: v.stock }))} value={variantId} low={3} invalid={needSize} onPick={(id) => { setVariantId(id); setNeedSize(false); setQty(1); }} />
+              <SizePicker item={{ id: p.id, name: p.name }} sizes={sizes} value={sizes.find((x) => x.size === sel[sizeName])?.id ?? null} low={3} invalid={needSize} onPick={(id) => { const s2 = sizes.find((x) => x.id === id); if (s2) pick(sizeName, s2.size); setNeedSize(false); setQty(1); }} />
             </div>
-            {variant && variant.stock <= 3 ? <p className="mt-2 text-sm font-bold">⚡ Só {variant.stock} {variant.stock === 1 ? "peça" : "peças"} nesse tamanho</p> : null}
+            {variant && variant.stock > 0 && variant.stock <= 3 ? <p className="mt-2 text-sm font-bold">⚡ Só {variant.stock} {variant.stock === 1 ? "peça" : "peças"} nesse tamanho</p> : null}
           </div>
         ) : null}
 
         {!SALES_OPEN ? (
           <div className="mt-8">
-            <SoonCTA className="w-full" message={`Oi! Quero garantir a ${p.name}${variant ? ` tamanho ${variant.size}` : ""} na pré-venda Volta 18K. Me avisa quando abrir?`} />
+            <SoonCTA className="w-full" message={`Oi! Quero garantir a ${p.name}${variant ? ` (${label})` : ""} na pré-venda Volta 18K. Me avisa quando abrir?`} />
             <p className="mt-3 text-sm text-ink-2">A compra online abre junto com a pré-venda. Escolha o tamanho e chame a gente: avisamos você primeiro.</p>
           </div>
         ) : (<>
@@ -170,11 +216,11 @@ export default function ProductView({ p }: { p: Product }) {
             <span className="w-6 text-center font-bold tabular-nums">{qty}</span>
             <button type="button" aria-label="Aumentar" className="w-10 sm:w-12 h-full grid place-items-center" onClick={() => setQty((q) => Math.min(maxQty, q + 1))}><PlusIcon size={18} /></button>
           </div>
-          <button type="button" disabled={soldOut} onClick={() => add(false)} className="btn btn-primary btn-lg flex-1 min-w-0 !px-5">
-            {soldOut ? "Esgotado nesta cor" : added ? (<><CheckIcon size={18} /> Na sacola</>) : "Adicionar à sacola"}
+          <button type="button" disabled={soldOut || (!!variant && variant.stock <= 0)} onClick={() => add(false)} className="btn btn-primary btn-lg flex-1 min-w-0 !px-5">
+            {soldOut ? (otherOpts.some((o) => o.values.length > 1) ? "Esgotado nesta combinação" : colors.length > 1 ? "Esgotado nesta cor" : "Esgotado") : variant && variant.stock <= 0 ? "Esgotado" : added ? (<><CheckIcon size={18} /> Na sacola</>) : "Adicionar à sacola"}
           </button>
         </div>
-        <button type="button" disabled={soldOut} onClick={() => add(true)} className="btn btn-neon btn-lg btn-block mt-3">Comprar agora</button>
+        <button type="button" disabled={soldOut || (!!variant && variant.stock <= 0)} onClick={() => add(true)} className="btn btn-neon btn-lg btn-block mt-3">Comprar agora</button>
         </>)}
 
         <ul className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
@@ -217,13 +263,13 @@ export default function ProductView({ p }: { p: Product }) {
       {/* Barra fixa no celular */}
       <div className="lg:hidden fixed inset-x-0 bottom-0 z-40 bg-white/95 backdrop-blur-xl border-t border-line px-4 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] flex items-center gap-3">
         <div className="min-w-0">
-          <p className="text-xs text-ink-3 truncate">{variant ? `${variant.color} · ${variant.size === "U" ? "Único" : variant.size}` : "Escolha o tamanho"}</p>
+          <p className="text-xs text-ink-3 truncate">{variant ? label : !single && !sel[sizeName] ? "Escolha o tamanho" : "Escolha as opções"}</p>
           <p className="font-black">{brl(price)}</p>
         </div>
         {SALES_OPEN ? (
           <button type="button" disabled={soldOut} onClick={() => add(false)} className="btn btn-primary flex-1">{added ? "Na sacola ✓" : "Adicionar"}</button>
         ) : (
-          <SoonCTA className="flex-1 !min-h-[52px] !text-sm" label="Abre em breve" message={`Oi! Quero garantir a ${p.name}${variant ? ` tamanho ${variant.size}` : ""} na pré-venda Volta 18K. Me avisa quando abrir?`} />
+          <SoonCTA className="flex-1 !min-h-[52px] !text-sm" label="Abre em breve" message={`Oi! Quero garantir a ${p.name}${variant ? ` (${label})` : ""} na pré-venda Volta 18K. Me avisa quando abrir?`} />
         )}
       </div>
 

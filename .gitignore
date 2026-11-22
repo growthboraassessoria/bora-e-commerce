@@ -9,3 +9,7 @@ next-env.d.ts
 supabase/.temp
 .env*
 .qa
+
+# Fotos enviadas pelo BORA OS no modo local (teste na máquina; em produção vão para o Storage do Supabase)
+public/img/uploads/
+.DS_Store

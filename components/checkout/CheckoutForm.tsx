@@ -17,7 +17,7 @@ import { placeOrder } from "@/app/(foco)/checkout/actions";
 import { CardIcon, CheckIcon, LockIcon, PixIcon, PlusIcon, ShieldIcon } from "@/components/ui/Icons";
 import CouponField from "./CouponField";
 import CardFields, { billingErrors, EMPTY_BILLING, EMPTY_CARD, type BillingState, type CardState } from "./CardFields";
-import { cardErrors, pagarmeCardEnabled, tokenizeCard } from "@/lib/pagarme-client";
+import { cardBrand, cardErrors, pagarmeCardEnabled, tokenizeCard } from "@/lib/pagarme-client";
 import { track } from "@/lib/analytics";
 import { adoptCheckoutToken, checkoutToken, markCheckoutRecovered, syncCheckout } from "@/lib/checkout-session";
 import { discountLabel } from "./Summary";
@@ -246,7 +246,7 @@ export default function CheckoutForm({ error: initialError, suggestions, initial
       }
       const res = await placeOrder({
         ...f, shippingId: "retirada", method, coupon: coupon || undefined, accept, lines, card: cardPayload,
-        cardSim: cardForm && !cardLive ? { installments: Math.min(card.installments, inst.n) } : undefined,
+        cardSim: cardForm && !cardLive ? { installments: Math.min(card.installments, inst.n), brand: cardBrand(card.cardNumber) ?? undefined, lastFour: card.cardNumber.replace(/\D/g, "").slice(-4) || undefined, holder: card.cardHolder.trim().toUpperCase().slice(0, 64) || undefined } : undefined,
         exclude: exclude.length ? exclude : undefined,
         expectedTotalCents: quote && !loading ? quote.totals.totalCents : undefined,
         checkoutToken: checkoutToken(false) ?? undefined,

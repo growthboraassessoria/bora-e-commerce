@@ -1,8 +1,9 @@
 "use server";
 import { z } from "zod";
 import { quote } from "@/lib/server/quote";
-import { cancelPendingOrder, CouponExhaustedError, createOrder, markOrderPaid, orderToken, OutOfStockError, setPaymentRef } from "@/lib/server/orders";
+import { cancelPendingOrder, CouponExhaustedError, createOrder, markOrderPaid, orderToken, OutOfStockError, savePaymentData, setPaymentRef } from "@/lib/server/orders";
 import { chargeOf, createCardOrder, PagarmeError, refusalMessage } from "@/lib/server/pagarme";
+import { snapshotOf } from "@/lib/server/pagarme-snapshot";
 import { installmentsFor } from "@/lib/payment-rules";
 import { getPaymentRules } from "@/lib/server/settings";
 import { paymentProvider, startPayment } from "@/lib/server/payments";
@@ -42,7 +43,7 @@ const Input = z.object({
     }),
   }).optional(),
   /** Cartão em ambiente simulado (demonstração): só as parcelas. Nenhum dado do cartão vem para o servidor. */
-  cardSim: z.object({ installments: z.number().int().min(1).max(12) }).optional(),
+  cardSim: z.object({ installments: z.number().int().min(1).max(12), brand: z.string().max(20).optional(), lastFour: z.string().regex(/^\d{4}$/).optional(), holder: z.string().max(64).optional() }).optional(),
   coupon: z.string().max(40).optional(),
   /** Automáticos que o cliente já sabe que não valem (avisados por este placeOrder). */
   exclude: z.array(z.string().max(40)).max(5).optional(),
@@ -122,6 +123,7 @@ export async function placeOrder(raw: unknown): Promise<PlaceOrderResult> {
       try {
         const po = await createCardOrder(order, { ...d.card, installments: Math.min(d.card.installments, allowed), statementDescriptor: rules.statementDescriptor });
         await setPaymentRef(order.id, po.id);
+        await savePaymentData(order.id, snapshotOf(po), { type: "checkout.cartao", at: new Date().toISOString(), status: po.status });
         const charge = chargeOf(po);
         if (po.status === "paid" || charge?.status === "paid") {
           const paid = await markOrderPaid(order.id, po.id);
@@ -137,6 +139,7 @@ export async function placeOrder(raw: unknown): Promise<PlaceOrderResult> {
         await done(order.id);
         return { ok: true, redirectUrl: `/pagamento/${order.id}?t=${t}` };
       } catch (e) {
+        await savePaymentData(order.id, { provider: "pagarme", method: "credit_card", transaction: { errors: [String((e as Error).message).slice(0, 300)] } }, { type: "checkout.erro", at: new Date().toISOString(), status: e instanceof PagarmeError ? String(e.status) : "erro" });
         await cancelPendingOrder(order.id, "Erro ao cobrar o cartão");
         console.error("pagarme card", e);
         if (e instanceof PagarmeError && e.status >= 400 && e.status < 500)
@@ -152,6 +155,13 @@ export async function placeOrder(raw: unknown): Promise<PlaceOrderResult> {
         return { ok: false, error: "Preencha os dados do cartão.", fields: { card: "Dados do cartão" } };
       }
       const n = Math.min(d.cardSim.installments, installmentsFor(order.totalCents, rules).n);
+      await savePaymentData(order.id, {
+        provider: "simulado", method: "credit_card", orderCode: order.code, orderStatus: "paid", chargeStatus: "paid",
+        amountCents: order.totalCents, paidAmountCents: order.totalCents, paidAt: new Date().toISOString(), createdAt: order.createdAt, installments: n,
+        statementDescriptor: rules.statementDescriptor,
+        card: { brand: d.cardSim.brand ?? null, lastFour: d.cardSim.lastFour ?? null, holderName: d.cardSim.holder ?? null },
+        transaction: { status: "captured", success: true, operationType: "auth_and_capture", acquirerName: "simulado", acquirerMessage: "Transação aprovada (simulada)" },
+      }, { type: "simulado.aprovado", at: new Date().toISOString(), status: "paid" });
       const paid = await markOrderPaid(order.id, `sim_card_${order.code}_${n}x`);
       if (storeMode() === "local" && paid) await rememberOrder(paid);
       await done(order.id);

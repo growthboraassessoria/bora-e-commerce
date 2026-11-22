@@ -17,7 +17,16 @@ export type Variant = {
   size: string;
   priceCents: number | null; // null = usa o preço do produto
   stock: number;
+  /** Cadastro do BORA OS (padrão Shopify): valor de cada opção, ex. { Cor: "Preto", Tamanho: "M", Estilo: "Cropped" }. */
+  options?: Record<string, string>;
+  /** Foto própria da variante (senão, a foto da cor). */
+  image?: string | null;
+  compareAtCents?: number | null;
+  barcode?: string | null;
 };
+
+/** Opção do produto (até 3): nome livre e valores, na ordem. Cor pode ter o código da cor. */
+export type ProductOption = { name: string; values: { value: string; hex?: string | null }[] };
 
 export type Product = {
   id: string;
@@ -37,7 +46,15 @@ export type Product = {
   images: ProductImage[];
   variants: Variant[];
   position: number;
-  status?: "active" | "draft"; // draft = oculto da loja
+  status?: "active" | "draft" | "archived"; // draft (rascunho) e archived (arquivado) = ocultos da loja
+  /** Cadastro do BORA OS: opções, tipo, custo, SEO e coleções (várias, com a ordem do produto dentro de cada uma). */
+  options?: ProductOption[];
+  productType?: string;
+  costCents?: number | null;
+  seoTitle?: string;
+  seoDescription?: string;
+  collections?: string[];
+  collectionPos?: Record<string, number>;
 };
 
 export type CartLine = { variantId: string; quantity: number };
@@ -70,7 +87,12 @@ export type Address = {
 
 export type OrderStatus = "pending" | "paid" | "canceled" | "shipped" | "delivered" | "refunded";
 
-export type OrderEvent = { kind: "created" | "paid" | "expired" | "canceled" | "refunded" | "picked_up" | "pickup_undone" | "note" | "attention"; actor: string; note?: string | null; at: string };
+export type OrderEvent = {
+  kind: "created" | "paid" | "expired" | "canceled" | "refunded" | "picked_up" | "pickup_undone" | "note" | "attention"
+    // Etapas do pedido (0005; ver lib/etapas.ts).
+    | "processing" | "packed" | "ready" | "shipped" | "delivered" | "stage_undone";
+  actor: string; note?: string | null; at: string;
+};
 
 export type Order = {
   id: string;
@@ -102,7 +124,16 @@ export type Order = {
   pickedUpBy?: string | null;
   canceledAt?: string | null;
   refundedAt?: string | null;
+  /** Etapas do pedido marcadas no BORA OS (0005; ver lib/etapas.ts). shipped = pronto para retirada ou enviado. */
+  processingAt?: string | null;
+  processingBy?: string | null;
+  packedAt?: string | null;
+  packedBy?: string | null;
+  shippedAt?: string | null;
+  shippedBy?: string | null;
   events?: OrderEvent[];
+  /** Resumo do pagamento devolvido pela Pagar.me (ou simulado). Ver lib/payment-data.ts. */
+  paymentData?: import("./payment-data").PaymentData | null;
   items: {
     variantId: string;
     productId: string;

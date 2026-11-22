@@ -6,6 +6,7 @@ import { onlyDigits } from "@/lib/shipping";
 import { brl } from "@/lib/money";
 import { track } from "@/lib/analytics";
 import { ArrowIcon, LockIcon } from "@/components/ui/Icons";
+import OrderSteps from "@/components/order/OrderSteps";
 import { searchMyOrders, type MyOrder } from "@/app/(loja)/meus-pedidos/actions";
 
 const when = (iso: string) => new Date(iso).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "America/Sao_Paulo" });
@@ -95,6 +96,7 @@ export default function MyOrders() {
                     </li>
                   ))}
                 </ul>
+                {o.status !== "canceled" && o.status !== "refunded" ? <OrderSteps variant="compact" steps={o.steps} className="mt-4" /> : null}
                 <div className="mt-5 pt-4 border-t border-line flex flex-wrap items-end justify-between gap-4">
                   <dl className="grid grid-cols-2 gap-x-8 gap-y-1 text-sm">
                     <dt className="text-ink-3">Total</dt><dt className="text-ink-3">Quem retira</dt>

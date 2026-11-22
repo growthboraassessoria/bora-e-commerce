@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
-import { checkOrderToken, getOrder, markOrderPaid } from "@/lib/server/orders";
+import { checkOrderToken, getOrder, markOrderPaid, savePaymentData } from "@/lib/server/orders";
+import { snapshotOf } from "@/lib/server/pagarme-snapshot";
 import { chargeOf, getPagarmeOrder, type PagarmeOrder } from "@/lib/server/pagarme";
 import AutoRefresh from "@/components/order/AutoRefresh";
 import { paymentProvider } from "@/lib/server/payments";
@@ -26,6 +27,7 @@ export default async function PaymentPage({ params, searchParams }: PageProps<"/
     if (order.paymentId) po = await getPagarmeOrder(order.paymentId).catch(() => null);
     const charge = po ? chargeOf(po) : null;
     if (po && (po.status === "paid" || charge?.status === "paid")) {
+      await savePaymentData(order.id, snapshotOf(po), { type: "consulta.pago", at: new Date().toISOString(), status: po.status });
       await markOrderPaid(order.id, po.id);
       redirect(`/obrigado/${id}?t=${t}`);
     }

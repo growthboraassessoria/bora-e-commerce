@@ -4,15 +4,71 @@
       "id": "camiseta-letz-bora-algodao",
       "slug": "camiseta-letz-bora-algodao",
       "name": "Camiseta LETZ BORA",
+      "subtitle": "Volta 18K · Algodão",
+      "description": "Camiseta preta de algodão para o dia a dia de quem corre. Na frente, o BORA pequeno. Nas costas, o selo LETZ BORA: running is a lifestyle, beyond the pace. Na barra, as coordenadas de onde a gente sai, em BH, e para onde vai: FROM: DRY LAKE, TO: ALL OVER THE WORLD.",
+      "categorySlug": "camisetas",
       "priceCents": 10000,
-      "status": "active",
-      "position": -2,
-      "image": "/img/produtos/c1-camiseta-costas-1600.webp",
+      "compareAtCents": null,
+      "badges": [
+        "Pré-venda",
+        "Volta 18K"
+      ],
+      "tags": [
+        "lifestyle",
+        "volta-18k",
+        "pre-venda",
+        "algodao"
+      ],
+      "featured": true,
+      "highlights": [
+        "Algodão macio",
+        "Selo LETZ BORA nas costas",
+        "Coordenadas na barra",
+        "Para treinar e para depois"
+      ],
+      "details": [
+        {
+          "label": "Tecido",
+          "value": "Algodão"
+        },
+        {
+          "label": "Modelagem",
+          "value": "Regular, unissex"
+        },
+        {
+          "label": "Estampa frente",
+          "value": "BORA, em branco"
+        },
+        {
+          "label": "Estampa costas",
+          "value": "Selo LETZ BORA em branco e verde neon"
+        }
+      ],
+      "care": "Lavar do avesso em água fria. Não usar alvejante. Secar à sombra. Não passar ferro sobre as estampas.",
+      "images": [
+        {
+          "url": "/img/produtos/c1-camiseta-costas-1600.webp",
+          "alt": "Camiseta LETZ BORA preta, costas com o selo Running is a lifestyle, Beyond the pace"
+        },
+        {
+          "url": "/img/produtos/c1-camiseta-frente-1600.webp",
+          "alt": "Camiseta LETZ BORA preta, frente com BORA"
+        },
+        {
+          "url": "/img/produtos/c1-camiseta-selo-1600.webp",
+          "alt": "Detalhe do selo LETZ BORA nas costas"
+        },
+        {
+          "url": "/img/produtos/c1-camiseta-coordenadas-1600.webp",
+          "alt": "Detalhe das coordenadas na barra: From Dry Lake, To all over the world"
+        }
+      ],
       "variants": [
         {
           "id": "c1cam-pto-pp",
           "sku": "C1CAM-PTO-PP",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "PP",
           "priceCents": null,
           "stock": 15,
@@ -22,6 +78,7 @@
           "id": "c1cam-pto-p",
           "sku": "C1CAM-PTO-P",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "P",
           "priceCents": null,
           "stock": 20,
@@ -31,6 +88,7 @@
           "id": "c1cam-pto-m",
           "sku": "C1CAM-PTO-M",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "M",
           "priceCents": null,
           "stock": 40,
@@ -40,6 +98,7 @@
           "id": "c1cam-pto-g",
           "sku": "C1CAM-PTO-G",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "G",
           "priceCents": null,
           "stock": 20,
@@ -49,26 +108,99 @@
           "id": "c1cam-pto-gg",
           "sku": "C1CAM-PTO-GG",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "GG",
           "priceCents": null,
           "stock": 5,
           "position": 4
         }
-      ]
+      ],
+      "position": -2,
+      "status": "active",
+      "image": "/img/produtos/c1-camiseta-costas-1600.webp"
     },
     {
       "id": "regata-cropped-bora",
       "slug": "regata-cropped-bora",
       "name": "Regata Cropped BORA",
+      "subtitle": "Volta 18K · Performance",
+      "description": "Regata cropped preta em tecido performance, leve e de secagem rápida. BORA em verde neon no peito, coordenadas da Pampulha na barra e, nas costas, as curvas de nível da marca em volta do raio. Para o treino e para o pós-treino.",
+      "categorySlug": "regatas",
       "priceCents": 12000,
-      "status": "active",
-      "position": -1,
-      "image": "/img/produtos/c1-cropped-preta-frente-1600.webp",
+      "compareAtCents": null,
+      "badges": [
+        "Pré-venda",
+        "Volta 18K"
+      ],
+      "tags": [
+        "corrida",
+        "volta-18k",
+        "pre-venda",
+        "feminino",
+        "cropped"
+      ],
+      "featured": true,
+      "highlights": [
+        "Tecido performance",
+        "Secagem rápida",
+        "Curvas de nível nas costas",
+        "Estampa verde neon"
+      ],
+      "details": [
+        {
+          "label": "Tecido",
+          "value": "Performance fabric, quick dry"
+        },
+        {
+          "label": "Modelagem",
+          "value": "Cropped, justa"
+        },
+        {
+          "label": "Cor",
+          "value": "Preta com estampa verde neon"
+        },
+        {
+          "label": "Estampa frente",
+          "value": "BORA no peito e coordenadas na barra"
+        },
+        {
+          "label": "Estampa costas",
+          "value": "Curvas de nível com o raio BORA"
+        }
+      ],
+      "care": "Lavar à mão ou na máquina em água fria. Não usar amaciante (tira o efeito de secagem rápida). Secar à sombra.",
+      "images": [
+        {
+          "url": "/img/produtos/c1-cropped-preta-frente-1600.webp",
+          "alt": "Regata Cropped BORA preta, frente com BORA em verde neon"
+        },
+        {
+          "url": "/img/produtos/c1-cropped-preta-costas-1600.webp",
+          "alt": "Regata Cropped BORA preta, costas com as curvas de nível e o raio"
+        },
+        {
+          "url": "/img/produtos/c1-cropped-preta-duo-1600.webp",
+          "alt": "Regata Cropped BORA preta, frente e costas"
+        },
+        {
+          "url": "/img/produtos/c1-cropped-preta-simbolo-1600.webp",
+          "alt": "Detalhe das curvas de nível com o raio nas costas"
+        },
+        {
+          "url": "/img/produtos/c1-cropped-preta-coordenadas-1600.webp",
+          "alt": "Detalhe das coordenadas na barra: From Dry Lake, To all over the world"
+        },
+        {
+          "url": "/img/produtos/c1-cropped-preta-logo-1600.webp",
+          "alt": "Detalhe do BORA em verde neon no peito"
+        }
+      ],
       "variants": [
         {
           "id": "c1crop-pto-pp",
           "sku": "C1CROP-PTO-PP",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "PP",
           "priceCents": null,
           "stock": 20,
@@ -78,6 +210,7 @@
           "id": "c1crop-pto-p",
           "sku": "C1CROP-PTO-P",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "P",
           "priceCents": null,
           "stock": 45,
@@ -87,6 +220,7 @@
           "id": "c1crop-pto-m",
           "sku": "C1CROP-PTO-M",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "M",
           "priceCents": null,
           "stock": 30,
@@ -96,26 +230,92 @@
           "id": "c1crop-pto-g",
           "sku": "C1CROP-PTO-G",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "G",
           "priceCents": null,
           "stock": 5,
           "position": 3
         }
-      ]
+      ],
+      "position": -1,
+      "status": "active",
+      "image": "/img/produtos/c1-cropped-preta-frente-1600.webp"
     },
     {
       "id": "camiseta-dri-fit-bora",
       "slug": "camiseta-dri-fit-bora",
       "name": "Camiseta Dri-Fit BORA",
+      "subtitle": "A camiseta oficial do movimento",
+      "description": "Tecido dri-fit leve que tira o suor da pele e seca rápido. Na frente, o BORA discreto. Nas costas, o grito: letz BORAAA!! Corte reto, gola careca e as curvas de nível da marca subindo pela barra.",
+      "categorySlug": "camisetas",
       "priceCents": 14900,
-      "status": "draft",
-      "position": 1,
-      "image": "/img/produtos/camiseta-preta-par-1600.webp",
+      "compareAtCents": null,
+      "badges": [
+        "Lançamento"
+      ],
+      "tags": [
+        "corrida",
+        "essenciais",
+        "drop-2026"
+      ],
+      "featured": true,
+      "highlights": [
+        "Seca rápido",
+        "Leve e respirável",
+        "letz BORAAA!! nas costas",
+        "Etiqueta sem costura"
+      ],
+      "details": [
+        {
+          "label": "Tecido",
+          "value": "Poliéster dri-fit com toque macio"
+        },
+        {
+          "label": "Modelagem",
+          "value": "Regular, unissex"
+        },
+        {
+          "label": "Estampa",
+          "value": "Silk de alta durabilidade"
+        },
+        {
+          "label": "Origem",
+          "value": "Feita no Brasil"
+        }
+      ],
+      "care": "Lavar à mão ou na máquina em água fria, do avesso. Não usar alvejante nem amaciante. Secar à sombra. Não passar ferro na estampa.",
+      "images": [
+        {
+          "url": "/img/produtos/camiseta-preta-par-1600.webp",
+          "alt": "Camiseta Dri-Fit BORA preta, frente e costas",
+          "color": "Preto"
+        },
+        {
+          "url": "/img/produtos/camiseta-preta-frente-1600.webp",
+          "alt": "Camiseta Dri-Fit BORA preta, frente",
+          "color": "Preto"
+        },
+        {
+          "url": "/img/produtos/camiseta-neon-par-1600.webp",
+          "alt": "Camiseta Dri-Fit BORA verde neon, frente e costas",
+          "color": "Verde Neon"
+        },
+        {
+          "url": "/img/produtos/camiseta-neon-frente-1600.webp",
+          "alt": "Camiseta Dri-Fit BORA verde neon, frente",
+          "color": "Verde Neon"
+        },
+        {
+          "url": "/img/produtos/camiseta-duo-1600.webp",
+          "alt": "Camisetas Dri-Fit BORA preta e verde neon"
+        }
+      ],
       "variants": [
         {
           "id": "drifit-pto-pp",
           "sku": "DRIFIT-PTO-PP",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "PP",
           "priceCents": null,
           "stock": 8,
@@ -125,6 +325,7 @@
           "id": "drifit-pto-p",
           "sku": "DRIFIT-PTO-P",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "P",
           "priceCents": null,
           "stock": 24,
@@ -134,6 +335,7 @@
           "id": "drifit-pto-m",
           "sku": "DRIFIT-PTO-M",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "M",
           "priceCents": null,
           "stock": 24,
@@ -143,6 +345,7 @@
           "id": "drifit-pto-g",
           "sku": "DRIFIT-PTO-G",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "G",
           "priceCents": null,
           "stock": 24,
@@ -152,6 +355,7 @@
           "id": "drifit-pto-gg",
           "sku": "DRIFIT-PTO-GG",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "GG",
           "priceCents": null,
           "stock": 24,
@@ -161,6 +365,7 @@
           "id": "drifit-pto-xgg",
           "sku": "DRIFIT-PTO-XGG",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "XGG",
           "priceCents": null,
           "stock": 6,
@@ -170,6 +375,7 @@
           "id": "drifit-neo-pp",
           "sku": "DRIFIT-NEO-PP",
           "color": "Verde Neon",
+          "colorHex": "#ceff00",
           "size": "PP",
           "priceCents": null,
           "stock": 8,
@@ -179,6 +385,7 @@
           "id": "drifit-neo-p",
           "sku": "DRIFIT-NEO-P",
           "color": "Verde Neon",
+          "colorHex": "#ceff00",
           "size": "P",
           "priceCents": null,
           "stock": 24,
@@ -188,6 +395,7 @@
           "id": "drifit-neo-m",
           "sku": "DRIFIT-NEO-M",
           "color": "Verde Neon",
+          "colorHex": "#ceff00",
           "size": "M",
           "priceCents": null,
           "stock": 24,
@@ -197,6 +405,7 @@
           "id": "drifit-neo-g",
           "sku": "DRIFIT-NEO-G",
           "color": "Verde Neon",
+          "colorHex": "#ceff00",
           "size": "G",
           "priceCents": null,
           "stock": 24,
@@ -206,6 +415,7 @@
           "id": "drifit-neo-gg",
           "sku": "DRIFIT-NEO-GG",
           "color": "Verde Neon",
+          "colorHex": "#ceff00",
           "size": "GG",
           "priceCents": null,
           "stock": 24,
@@ -215,26 +425,79 @@
           "id": "drifit-neo-xgg",
           "sku": "DRIFIT-NEO-XGG",
           "color": "Verde Neon",
+          "colorHex": "#ceff00",
           "size": "XGG",
           "priceCents": null,
           "stock": 6,
           "position": 11
         }
-      ]
+      ],
+      "position": 1,
+      "status": "draft",
+      "image": "/img/produtos/camiseta-preta-par-1600.webp"
     },
     {
       "id": "corta-vento-bora",
       "slug": "corta-vento-bora",
       "name": "Corta-vento BORA",
+      "subtitle": "Para o treino das 5h",
+      "description": "Corta-vento leve com capuz, recortes em preto, branco e verde neon e o escudo bordado no peito. Bloqueia o vento, aguenta garoa fina e dobra pequeno para ir na mochila. Na manga, o BORAAA!! que todo mundo reconhece na largada.",
+      "categorySlug": "agasalhos",
       "priceCents": 38900,
-      "status": "draft",
-      "position": 2,
-      "image": "/img/produtos/corta-vento-frente-1600.webp",
+      "compareAtCents": null,
+      "badges": [
+        "Lançamento"
+      ],
+      "tags": [
+        "corrida",
+        "drop-2026"
+      ],
+      "featured": true,
+      "highlights": [
+        "Bloqueia o vento",
+        "Repele garoa fina",
+        "Capuz com regulagem",
+        "Punhos e barra com elástico"
+      ],
+      "details": [
+        {
+          "label": "Tecido",
+          "value": "Tactel leve com acabamento repelente"
+        },
+        {
+          "label": "Fechamento",
+          "value": "Zíper frontal completo"
+        },
+        {
+          "label": "Bolsos",
+          "value": "Dois bolsos laterais"
+        },
+        {
+          "label": "Modelagem",
+          "value": "Regular, unissex"
+        }
+      ],
+      "care": "Lavar à mão em água fria. Não torcer. Secar à sombra, pendurado. Não usar secadora.",
+      "images": [
+        {
+          "url": "/img/produtos/corta-vento-frente-1600.webp",
+          "alt": "Corta-vento BORA, frente"
+        },
+        {
+          "url": "/img/produtos/corta-vento-modelo-1600.webp",
+          "alt": "Corta-vento BORA vestido"
+        },
+        {
+          "url": "/img/produtos/corta-vento-produto-1600.webp",
+          "alt": "Corta-vento BORA, detalhe dos recortes"
+        }
+      ],
       "variants": [
         {
           "id": "cortavento-pb-p",
           "sku": "CORTAVENTO-PB-P",
           "color": "Preto e Branco",
+          "colorHex": "#0a0a0a",
           "size": "P",
           "priceCents": null,
           "stock": 12,
@@ -244,6 +507,7 @@
           "id": "cortavento-pb-m",
           "sku": "CORTAVENTO-PB-M",
           "color": "Preto e Branco",
+          "colorHex": "#0a0a0a",
           "size": "M",
           "priceCents": null,
           "stock": 12,
@@ -253,6 +517,7 @@
           "id": "cortavento-pb-g",
           "sku": "CORTAVENTO-PB-G",
           "color": "Preto e Branco",
+          "colorHex": "#0a0a0a",
           "size": "G",
           "priceCents": null,
           "stock": 12,
@@ -262,6 +527,7 @@
           "id": "cortavento-pb-gg",
           "sku": "CORTAVENTO-PB-GG",
           "color": "Preto e Branco",
+          "colorHex": "#0a0a0a",
           "size": "GG",
           "priceCents": null,
           "stock": 12,
@@ -271,26 +537,81 @@
           "id": "cortavento-pb-xgg",
           "sku": "CORTAVENTO-PB-XGG",
           "color": "Preto e Branco",
+          "colorHex": "#0a0a0a",
           "size": "XGG",
           "priceCents": null,
           "stock": 3,
           "position": 4
         }
-      ]
+      ],
+      "position": 2,
+      "status": "draft",
+      "image": "/img/produtos/corta-vento-frente-1600.webp"
     },
     {
       "id": "macaquinho-tri-bora",
       "slug": "macaquinho-tri-bora",
       "name": "Macaquinho Tri BORA",
+      "subtitle": "Nada, pedala e corre",
+      "description": "Macaquinho de triathlon com manga curta, zíper nas costas e forro de secagem rápida. As curvas de nível da marca na frente e as três faixas neon na coluna. Feito para a prova inteira, da largada na água até a chegada.",
+      "categorySlug": "triathlon",
       "priceCents": 54900,
-      "status": "draft",
-      "position": 3,
-      "image": "/img/produtos/macaquinho-branco-1600.webp",
+      "compareAtCents": null,
+      "badges": [
+        "Triathlon"
+      ],
+      "tags": [
+        "triathlon",
+        "drop-2026"
+      ],
+      "featured": true,
+      "highlights": [
+        "Forro de secagem rápida",
+        "Zíper nas costas",
+        "Barra com silicone",
+        "Tecido com compressão leve"
+      ],
+      "details": [
+        {
+          "label": "Tecido",
+          "value": "Lycra técnica com compressão leve"
+        },
+        {
+          "label": "Forro",
+          "value": "Espuma fina de triathlon"
+        },
+        {
+          "label": "Fechamento",
+          "value": "Zíper traseiro"
+        },
+        {
+          "label": "Modelagem",
+          "value": "Justa"
+        }
+      ],
+      "care": "Enxaguar em água doce logo após o uso, principalmente depois de piscina ou mar. Lavar à mão. Secar à sombra.",
+      "images": [
+        {
+          "url": "/img/produtos/macaquinho-branco-1600.webp",
+          "alt": "Macaquinho Tri BORA branco, frente e costas",
+          "color": "Branco"
+        },
+        {
+          "url": "/img/produtos/macaquinho-preto-1600.webp",
+          "alt": "Macaquinho Tri BORA preto, frente e costas",
+          "color": "Preto"
+        },
+        {
+          "url": "/img/produtos/macaquinho-duo-1600.webp",
+          "alt": "Macaquinho Tri BORA nas duas cores"
+        }
+      ],
       "variants": [
         {
           "id": "macaquinho-bco-p",
           "sku": "MACAQUINHO-BCO-P",
           "color": "Branco",
+          "colorHex": "#ffffff",
           "size": "P",
           "priceCents": null,
           "stock": 8,
@@ -300,6 +621,7 @@
           "id": "macaquinho-bco-m",
           "sku": "MACAQUINHO-BCO-M",
           "color": "Branco",
+          "colorHex": "#ffffff",
           "size": "M",
           "priceCents": null,
           "stock": 8,
@@ -309,6 +631,7 @@
           "id": "macaquinho-bco-g",
           "sku": "MACAQUINHO-BCO-G",
           "color": "Branco",
+          "colorHex": "#ffffff",
           "size": "G",
           "priceCents": null,
           "stock": 8,
@@ -318,6 +641,7 @@
           "id": "macaquinho-bco-gg",
           "sku": "MACAQUINHO-BCO-GG",
           "color": "Branco",
+          "colorHex": "#ffffff",
           "size": "GG",
           "priceCents": null,
           "stock": 8,
@@ -327,6 +651,7 @@
           "id": "macaquinho-pto-p",
           "sku": "MACAQUINHO-PTO-P",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "P",
           "priceCents": null,
           "stock": 8,
@@ -336,6 +661,7 @@
           "id": "macaquinho-pto-m",
           "sku": "MACAQUINHO-PTO-M",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "M",
           "priceCents": null,
           "stock": 8,
@@ -345,6 +671,7 @@
           "id": "macaquinho-pto-g",
           "sku": "MACAQUINHO-PTO-G",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "G",
           "priceCents": null,
           "stock": 8,
@@ -354,46 +681,138 @@
           "id": "macaquinho-pto-gg",
           "sku": "MACAQUINHO-PTO-GG",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "GG",
           "priceCents": null,
           "stock": 8,
           "position": 7
         }
-      ]
+      ],
+      "position": 3,
+      "status": "draft",
+      "image": "/img/produtos/macaquinho-branco-1600.webp"
     },
     {
       "id": "bone-five-panel-bora",
       "slug": "bone-five-panel-bora",
       "name": "Boné Five Panel BORA",
+      "subtitle": "Leve, com aba flexível",
+      "description": "Five panel de corrida, leve e com aba flexível que dobra sem marcar. BORA em verde neon na frente e as curvas de nível da marca na lateral. Regulagem traseira para qualquer cabeça.",
+      "categorySlug": "acessorios",
       "priceCents": 13900,
-      "status": "draft",
-      "position": 4,
-      "image": "/img/produtos/bone-five-panel-1600.webp",
+      "compareAtCents": null,
+      "badges": [],
+      "tags": [
+        "corrida",
+        "essenciais"
+      ],
+      "featured": true,
+      "highlights": [
+        "Ultraleve",
+        "Aba flexível",
+        "Regulagem traseira",
+        "Faixa interna que absorve suor"
+      ],
+      "details": [
+        {
+          "label": "Tecido",
+          "value": "Poliéster técnico"
+        },
+        {
+          "label": "Tamanho",
+          "value": "Único, ajustável"
+        },
+        {
+          "label": "Aba",
+          "value": "Flexível, dobrável"
+        }
+      ],
+      "care": "Lavar à mão com sabão neutro. Não colocar na máquina. Secar à sombra.",
+      "images": [
+        {
+          "url": "/img/produtos/bone-five-panel-1600.webp",
+          "alt": "Boné Five Panel BORA preto"
+        },
+        {
+          "url": "/img/produtos/bone-five-panel-detalhe-1600.webp",
+          "alt": "Boné Five Panel BORA, detalhe da lateral"
+        }
+      ],
       "variants": [
         {
           "id": "bone-pto-u",
           "sku": "BONE-PTO-U",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "U",
           "priceCents": null,
           "stock": 30,
           "position": 0
         }
-      ]
+      ],
+      "position": 4,
+      "status": "draft",
+      "image": "/img/produtos/bone-five-panel-1600.webp"
     },
     {
       "id": "meia-bora-cano-alto",
       "slug": "meia-bora-cano-alto",
       "name": "Meia BORA Cano Alto",
+      "subtitle": "Compressão leve, presença forte",
+      "description": "Meia de corrida cano alto com compressão leve no arco, punho firme e calcanhar reforçado. Três cores: neon com as curvas de nível, preta com o letz BORAAA!! e branca com o escudo.",
+      "categorySlug": "acessorios",
       "priceCents": 5900,
-      "status": "draft",
-      "position": 5,
-      "image": "/img/produtos/meia-neon-1600.webp",
+      "compareAtCents": null,
+      "badges": [],
+      "tags": [
+        "corrida",
+        "essenciais"
+      ],
+      "featured": false,
+      "highlights": [
+        "Compressão leve no arco",
+        "Calcanhar e ponta reforçados",
+        "Não escorrega",
+        "Respirável"
+      ],
+      "details": [
+        {
+          "label": "Composição",
+          "value": "Poliamida, algodão e elastano"
+        },
+        {
+          "label": "Cano",
+          "value": "Alto"
+        }
+      ],
+      "care": "Lavar do avesso em água fria. Não usar alvejante. Secar à sombra.",
+      "images": [
+        {
+          "url": "/img/produtos/meia-neon-1600.webp",
+          "alt": "Meia BORA verde neon",
+          "color": "Verde Neon"
+        },
+        {
+          "url": "/img/produtos/meia-preta-1600.webp",
+          "alt": "Meia BORA preta",
+          "color": "Preto"
+        },
+        {
+          "url": "/img/produtos/meia-branca-1600.webp",
+          "alt": "Meia BORA branca",
+          "color": "Branco"
+        },
+        {
+          "url": "/img/produtos/meia-trio-1600.webp",
+          "alt": "Meias BORA nas três cores"
+        }
+      ],
       "variants": [
         {
           "id": "meia-neo-34-38",
           "sku": "MEIA-NEO-34-38",
           "color": "Verde Neon",
+          "colorHex": "#ceff00",
           "size": "34-38",
           "priceCents": null,
           "stock": 40,
@@ -403,6 +822,7 @@
           "id": "meia-neo-39-43",
           "sku": "MEIA-NEO-39-43",
           "color": "Verde Neon",
+          "colorHex": "#ceff00",
           "size": "39-43",
           "priceCents": null,
           "stock": 40,
@@ -412,6 +832,7 @@
           "id": "meia-pto-34-38",
           "sku": "MEIA-PTO-34-38",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "34-38",
           "priceCents": null,
           "stock": 40,
@@ -421,6 +842,7 @@
           "id": "meia-pto-39-43",
           "sku": "MEIA-PTO-39-43",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "39-43",
           "priceCents": null,
           "stock": 40,
@@ -430,6 +852,7 @@
           "id": "meia-bco-34-38",
           "sku": "MEIA-BCO-34-38",
           "color": "Branco",
+          "colorHex": "#ffffff",
           "size": "34-38",
           "priceCents": null,
           "stock": 40,
@@ -439,26 +862,77 @@
           "id": "meia-bco-39-43",
           "sku": "MEIA-BCO-39-43",
           "color": "Branco",
+          "colorHex": "#ffffff",
           "size": "39-43",
           "priceCents": null,
           "stock": 40,
           "position": 5
         }
-      ]
+      ],
+      "position": 5,
+      "status": "draft",
+      "image": "/img/produtos/meia-neon-1600.webp"
     },
     {
       "id": "kit-letz-bora",
       "slug": "kit-letz-bora",
       "name": "Kit letz BORA",
+      "subtitle": "Camiseta + boné + meia",
+      "description": "O uniforme completo do movimento num kit só: Camiseta Dri-Fit BORA, Boné Five Panel BORA e Meia BORA Cano Alto. Você escolhe a cor e o tamanho da camiseta; boné preto e meia na cor da camiseta.",
+      "categorySlug": "kits",
       "priceCents": 27900,
-      "status": "draft",
-      "position": 6,
-      "image": "/img/produtos/camiseta-neon-par-1600.webp",
+      "compareAtCents": 34700,
+      "badges": [
+        "Kit",
+        "3 peças"
+      ],
+      "tags": [
+        "kit",
+        "drop-2026"
+      ],
+      "featured": true,
+      "highlights": [
+        "3 peças",
+        "Preço de kit",
+        "Pronto para a primeira largada"
+      ],
+      "details": [
+        {
+          "label": "Inclui",
+          "value": "1 camiseta, 1 boné e 1 par de meias"
+        },
+        {
+          "label": "Meia",
+          "value": "Tamanho 39-43 (troca grátis para 34-38)"
+        }
+      ],
+      "care": "Siga a etiqueta de cada peça.",
+      "images": [
+        {
+          "url": "/img/produtos/camiseta-neon-par-1600.webp",
+          "alt": "Kit letz BORA com camiseta neon",
+          "color": "Verde Neon"
+        },
+        {
+          "url": "/img/produtos/camiseta-preta-par-1600.webp",
+          "alt": "Kit letz BORA com camiseta preta",
+          "color": "Preto"
+        },
+        {
+          "url": "/img/produtos/bone-five-panel-1600.webp",
+          "alt": "Boné do kit letz BORA"
+        },
+        {
+          "url": "/img/produtos/meia-trio-1600.webp",
+          "alt": "Meias do kit letz BORA"
+        }
+      ],
       "variants": [
         {
           "id": "kit-pto-pp",
           "sku": "KIT-PTO-PP",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "PP",
           "priceCents": null,
           "stock": 4,
@@ -468,6 +942,7 @@
           "id": "kit-pto-p",
           "sku": "KIT-PTO-P",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "P",
           "priceCents": null,
           "stock": 15,
@@ -477,6 +952,7 @@
           "id": "kit-pto-m",
           "sku": "KIT-PTO-M",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "M",
           "priceCents": null,
           "stock": 15,
@@ -486,6 +962,7 @@
           "id": "kit-pto-g",
           "sku": "KIT-PTO-G",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "G",
           "priceCents": null,
           "stock": 15,
@@ -495,6 +972,7 @@
           "id": "kit-pto-gg",
           "sku": "KIT-PTO-GG",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "GG",
           "priceCents": null,
           "stock": 15,
@@ -504,6 +982,7 @@
           "id": "kit-pto-xgg",
           "sku": "KIT-PTO-XGG",
           "color": "Preto",
+          "colorHex": "#0a0a0a",
           "size": "XGG",
           "priceCents": null,
           "stock": 4,
@@ -513,6 +992,7 @@
           "id": "kit-neo-pp",
           "sku": "KIT-NEO-PP",
           "color": "Verde Neon",
+          "colorHex": "#ceff00",
           "size": "PP",
           "priceCents": null,
           "stock": 4,
@@ -522,6 +1002,7 @@
           "id": "kit-neo-p",
           "sku": "KIT-NEO-P",
           "color": "Verde Neon",
+          "colorHex": "#ceff00",
           "size": "P",
           "priceCents": null,
           "stock": 15,
@@ -531,6 +1012,7 @@
           "id": "kit-neo-m",
           "sku": "KIT-NEO-M",
           "color": "Verde Neon",
+          "colorHex": "#ceff00",
           "size": "M",
           "priceCents": null,
           "stock": 15,
@@ -540,6 +1022,7 @@
           "id": "kit-neo-g",
           "sku": "KIT-NEO-G",
           "color": "Verde Neon",
+          "colorHex": "#ceff00",
           "size": "G",
           "priceCents": null,
           "stock": 15,
@@ -549,6 +1032,7 @@
           "id": "kit-neo-gg",
           "sku": "KIT-NEO-GG",
           "color": "Verde Neon",
+          "colorHex": "#ceff00",
           "size": "GG",
           "priceCents": null,
           "stock": 15,
@@ -558,12 +1042,74 @@
           "id": "kit-neo-xgg",
           "sku": "KIT-NEO-XGG",
           "color": "Verde Neon",
+          "colorHex": "#ceff00",
           "size": "XGG",
           "priceCents": null,
           "stock": 4,
           "position": 11
         }
-      ]
+      ],
+      "position": 6,
+      "status": "draft",
+      "image": "/img/produtos/camiseta-neon-par-1600.webp"
+    }
+  ],
+  "categories": [
+    {
+      "id": "volta-18k",
+      "slug": "volta-18k",
+      "name": "Volta 18K",
+      "description": "Pré-venda Edição Pampulha. Duas peças, 200 unidades: camiseta de algodão e regata cropped. From: Dry Lake, to: all over the world.",
+      "image": "/img/produtos/c1-cropped-preta-duo-1600.webp",
+      "position": 0
+    },
+    {
+      "id": "camisetas",
+      "slug": "camisetas",
+      "name": "Camisetas",
+      "description": "Dri-fit leve, seca rápido e veste o movimento. Do treino de terça à prova de domingo.",
+      "image": "/img/produtos/camiseta-duo-1600.webp",
+      "position": 1
+    },
+    {
+      "id": "agasalhos",
+      "slug": "agasalhos",
+      "name": "Agasalhos",
+      "description": "Corta-vento para o treino das 5h e para a volta pra casa depois da prova.",
+      "image": "/img/produtos/corta-vento-frente-1600.webp",
+      "position": 2
+    },
+    {
+      "id": "regatas",
+      "slug": "regatas",
+      "name": "Regatas",
+      "description": "Regata cropped de tecido performance, leve e de secagem rápida. Para o treino e para depois dele.",
+      "image": "/img/produtos/c1-cropped-preta-frente-1600.webp",
+      "position": 3
+    },
+    {
+      "id": "triathlon",
+      "slug": "triathlon",
+      "name": "Triathlon",
+      "description": "Macaquinho de prova para nadar, pedalar e correr sem trocar de roupa.",
+      "image": "/img/produtos/macaquinho-duo-1600.webp",
+      "position": 3
+    },
+    {
+      "id": "acessorios",
+      "slug": "acessorios",
+      "name": "Acessórios",
+      "description": "Boné five panel e meias de compressão leve. Detalhe que se vê de longe.",
+      "image": "/img/produtos/bone-five-panel-1600.webp",
+      "position": 4
+    },
+    {
+      "id": "kits",
+      "slug": "kits",
+      "name": "Kits",
+      "description": "Combinações prontas com preço de kit. O jeito mais rápido de vestir BORA.",
+      "image": "/img/produtos/camiseta-neon-par-1600.webp",
+      "position": 5
     }
   ],
   "coupons": [

@@ -8,6 +8,8 @@ import { brl } from "@/lib/money";
 import { SITE_URL, STORE } from "@/lib/config";
 import { PICKUP, PRESALE, pickupWhen } from "@/lib/presale";
 import AfterOrder from "@/components/order/AfterOrder";
+import OrderSteps from "@/components/order/OrderSteps";
+import { customerSteps } from "@/lib/etapas";
 import PaymentIcons from "@/components/ui/PaymentIcons";
 import { ArrowIcon, CardIcon, CheckIcon } from "@/components/ui/Icons";
 
@@ -36,13 +38,8 @@ export default async function ThankYouPage({ params, searchParams }: PageProps<"
   // QR do passe: abre esta mesma página (link assinado), para a equipe conferir o pedido na retirada.
   const qr = paid ? await QRCode.toString(`${SITE_URL}/obrigado/${order.id}?t=${t}`, { type: "svg", margin: 0, errorCorrectionLevel: "M", color: { dark: "#0a0a0a", light: "#ffffff" } }) : null;
 
-  const steps = [
-    { t: "Pedido recebido", d: time(order.createdAt), done: true },
-    { t: "Pagamento aprovado", d: paid ? time(order.paidAt) ?? METHOD[order.paymentMethod] : "Aguardando", done: paid },
-    { t: "Peça separada", d: paid ? "No seu nome" : "Depois do pagamento", done: paid },
-    { t: "Retirada no evento", d: delivered ? time(order.pickedUpAt ?? null) ?? "Retirado" : `${PICKUP.opens} às ${PICKUP.closes}`, done: delivered },
-  ];
-  const current = steps.findIndex((s) => !s.done);
+  // Mesmas etapas da linha de processo do BORA OS (lib/etapas.ts).
+  const steps = customerSteps(order);
 
   return (
     <div className="overflow-x-clip">
@@ -73,7 +70,7 @@ export default async function ThankYouPage({ params, searchParams }: PageProps<"
             {delivered ? (
               <>Você retirou suas peças em {time(order.pickedUpAt ?? null)}. Agora é treinar e postar com <strong className="text-ink">#letzBORA</strong>.</>
             ) : paid ? (
-              <>Sua peça já está separada no seu nome. A confirmação foi para <strong className="text-ink">{order.email}</strong>. No evento, é só mostrar o passe.</>
+              <>{order.packedAt ? "Sua peça já está separada no seu nome." : "Suas peças estão reservadas no seu nome."} A confirmação foi para <strong className="text-ink">{order.email}</strong>. No evento, é só mostrar o passe.</>
             ) : canceled ? (
               "O prazo para pagar terminou e as peças voltaram para a grade. Se ainda quiser, é só montar a sacola de novo."
             ) : (
@@ -98,18 +95,16 @@ export default async function ThankYouPage({ params, searchParams }: PageProps<"
 
           {/* Linha do tempo */}
           {!canceled ? (
-            <ol className="mt-12 grid grid-cols-4 gap-2 max-w-[38rem]" aria-label="Andamento do pedido">
-              {steps.map((s, i) => (
-                <li key={s.t} className="relative">
-                  {i < steps.length - 1 ? <span className={`absolute left-7 right-0 top-[13px] h-0.5 rounded ${steps[i + 1].done ? "bg-ink" : "bg-sand-2"}`} /> : null}
-                  <span className={`relative z-10 size-7 rounded-full grid place-items-center text-xs font-black ${s.done ? "bg-ink text-neon" : i === current ? "bg-white ring-2 ring-ink text-ink" : "bg-sand text-ink-3"}`}>
-                    {s.done ? <CheckIcon size={14} /> : i + 1}
-                  </span>
-                  <p className={`mt-3 text-[13px] sm:text-sm font-bold leading-tight pr-2 ${s.done || i === current ? "" : "text-ink-3"}`}>{s.t}</p>
-                  {s.d ? <p className="mt-0.5 text-[11px] sm:text-xs text-ink-3 leading-snug pr-2">{s.d}</p> : null}
-                </li>
-              ))}
-            </ol>
+            <OrderSteps
+              steps={steps}
+              className="mt-12 max-w-[38rem]"
+              hints={{
+                pagamento: paid ? METHOD[order.paymentMethod] : "Aguardando",
+                processamento: paid ? "Equipe BORA" : "Depois do pagamento",
+                separado: paid ? "No seu nome" : null,
+                retirado: order.shippingMethod === "retirada" || !order.shippingMethod ? `${PICKUP.opens} às ${PICKUP.closes}` : null,
+              }}
+            />
           ) : null}
         </div>
 

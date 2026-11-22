@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
-import { getOrder, markOrderPaid } from "@/lib/server/orders";
+import { getOrder, markOrderPaid, savePaymentData } from "@/lib/server/orders";
+import { snapshotOf } from "@/lib/server/pagarme-snapshot";
 import { chargeOf, getPagarmeOrder, pagarmeEnabled, PagarmeError } from "@/lib/server/pagarme";
 
 // Webhook da Pagar.me (configurado no painel com usuário e senha: PAGARME_WEBHOOK_USER / PAGARME_WEBHOOK_PASSWORD).
@@ -38,6 +39,8 @@ export async function POST(req: Request) {
     const po = await getPagarmeOrder(pagarmeOrderId);
     const ourId = po.metadata?.order_id;
     if (!ourId || !(await getOrder(ourId))) return NextResponse.json({ ok: true, ignored: "pedido de outra integração" });
+    // Guarda o retorno da Pagar.me e o aviso recebido no histórico do pedido (aparece no BORA OS).
+    await savePaymentData(ourId, snapshotOf(po), { type: type || "webhook", at: new Date().toISOString(), status: chargeOf(po)?.status ?? po.status });
     if (po.status === "paid" || chargeOf(po)?.status === "paid") {
       await markOrderPaid(ourId, po.id);
       return NextResponse.json({ ok: true, paid: true });

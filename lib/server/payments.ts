@@ -2,7 +2,8 @@ import "server-only";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { SITE_URL, STORE } from "../config";
 import { onlyDigits } from "../shipping";
-import { HOLD_MINUTES, orderToken } from "./orders";
+import { HOLD_MINUTES, orderToken, savePaymentData } from "./orders";
+import { snapshotOf } from "./pagarme-snapshot";
 import type { Order } from "../types";
 import { createPixOrder, pagarmeEnabled } from "./pagarme";
 import { getPaymentRules } from "./settings";
@@ -25,6 +26,7 @@ export async function startPayment(order: Order): Promise<{ redirectUrl: string;
     // Só o Pix passa por aqui; o cartão é cobrado direto na ação do checkout (precisa do token do navegador).
     const rules = await getPaymentRules();
     const po = await createPixOrder(order, Math.min(rules.pixExpiresMinutes, HOLD_MINUTES.pix) * 60);
+    await savePaymentData(order.id, snapshotOf(po), { type: "checkout.pix", at: new Date().toISOString(), status: po.status });
     return { redirectUrl: `/pagamento/${order.id}?t=${token}`, paymentRef: po.id };
   }
 

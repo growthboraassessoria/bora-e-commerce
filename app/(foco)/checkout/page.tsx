@@ -1,3 +1,4 @@
+import { simpleOptions } from "@/lib/options";
 import type { Metadata } from "next";
 import { SALES_OPEN } from "@/lib/config";
 import SalesClosed from "@/components/ui/SalesClosed";
@@ -31,7 +32,7 @@ export default async function CheckoutPage({ searchParams }: PageProps<"/checkou
 
   // Peças para a sugestão de frete grátis: a primeira cor de cada produto com estoque.
   const suggestions: Suggestion[] = (await getAllProducts())
-    .filter((p) => p.variants.some((v) => v.stock > 0) && !p.tags.includes("kit"))
+    .filter((p) => p.variants.some((v) => v.stock > 0) && !p.tags.includes("kit") && simpleOptions(p))
     .map((p) => {
       const color = p.variants.find((v) => v.stock > 0)!.color;
       const vs = p.variants.filter((v) => v.color === color).sort((a, b) => SIZE_ORDER.indexOf(a.size) - SIZE_ORDER.indexOf(b.size));

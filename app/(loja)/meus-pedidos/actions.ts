@@ -4,6 +4,7 @@ import { onlyDigits } from "@/lib/shipping";
 import { findOrdersByCustomer, orderToken } from "@/lib/server/orders";
 import { clientIp, hit, minDelay } from "@/lib/server/rate-limit";
 import type { OrderStatus } from "@/lib/types";
+import { customerSteps, currentStepLabel, type CustomerStep } from "@/lib/etapas";
 
 export type MyOrder = {
   code: string;
@@ -15,6 +16,8 @@ export type MyOrder = {
   pickupBy: string;
   items: { name: string; size: string; quantity: number }[];
   passUrl: string;
+  /** Andamento (mesmas etapas da linha de processo do BORA OS). */
+  steps: CustomerStep[];
 };
 
 export type SearchResult = { ok: true; orders: MyOrder[] } | { ok: false; error: string };
@@ -53,7 +56,8 @@ export async function searchMyOrders(input: { cpf: string; phone: string }): Pro
     return {
       ok: true,
       orders: orders.map((o) => ({
-        code: o.code, createdAt: o.createdAt, status: o.status, statusLabel: STATUS[o.status] ?? o.status,
+        code: o.code, createdAt: o.createdAt, status: o.status, statusLabel: o.status === "paid" ? currentStepLabel(o) : STATUS[o.status] ?? o.status,
+        steps: customerSteps(o),
         totalCents: o.totalCents, paymentMethod: o.paymentMethod, pickupBy: o.pickupName || o.name,
         items: o.items.map((it) => ({ name: it.name, size: sizeOf(it.variantLabel), quantity: it.quantity })),
         passUrl: `/obrigado/${o.id}?t=${orderToken(o.id)}`,
