@@ -13,9 +13,11 @@ function authorized(req: Request) {
   const pass = process.env.PAGARME_WEBHOOK_PASSWORD;
   if (!user || !pass) return true; // sem credencial configurada, a segurança vem da consulta à API
   const got = req.headers.get("authorization") ?? "";
-  const expected = `Basic ${Buffer.from(`${user}:${pass}`).toString("base64")}`;
-  const a = Buffer.from(got), b = Buffer.from(expected);
-  return a.length === b.length && timingSafeEqual(a, b);
+  if (!got.startsWith("Basic ")) return false;
+  // Confere usuário e senha separados, ignorando espaços nas pontas (painel da Pagar.me ao colar).
+  const [u = "", ...rest] = Buffer.from(got.slice(6), "base64").toString("utf8").split(":");
+  const same = (x: string, y: string) => { const a = Buffer.from(x), b = Buffer.from(y); return a.length === b.length && timingSafeEqual(a, b); };
+  return same(u.trim(), user.trim()) && same(rest.join(":").trim(), pass.trim());
 }
 
 type Hook = { id?: string; type?: string; data?: { id?: string; object?: string; order?: { id?: string }; order_id?: string } };
@@ -24,9 +26,10 @@ export async function POST(req: Request) {
   if (!authorized(req)) {
     // Diagnóstico sem segredo: o tipo de credencial que chegou e se o usuário confere (a senha nunca vai para o log).
     const got = req.headers.get("authorization") ?? "";
-    let user = "";
-    if (got.startsWith("Basic ")) user = Buffer.from(got.slice(6), "base64").toString("utf8").split(":")[0] ?? "";
-    console.warn("pagarme webhook 401", JSON.stringify({ scheme: got.split(" ")[0] || "nenhuma", userMatches: !!user && user === process.env.PAGARME_WEBHOOK_USER, userLength: user.length, ua: req.headers.get("user-agent")?.slice(0, 60) }));
+    let user = "", pw = "";
+    if (got.startsWith("Basic ")) [user = "", pw = ""] = Buffer.from(got.slice(6), "base64").toString("utf8").split(/:(.*)/s);
+    // Só tamanhos (nunca a senha): ajuda a ver se faltou ou sobrou caractere ao colar no painel.
+    console.warn("pagarme webhook 401", JSON.stringify({ scheme: got.split(" ")[0] || "nenhuma", userMatches: !!user && user.trim() === process.env.PAGARME_WEBHOOK_USER?.trim(), userLength: user.length, passLength: pw.length, expectedPassLength: process.env.PAGARME_WEBHOOK_PASSWORD?.length ?? 0, ua: req.headers.get("user-agent")?.slice(0, 60) }));
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
   if (!pagarmeEnabled()) return NextResponse.json({ ok: true, ignored: "pagarme desligada" });
