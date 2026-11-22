@@ -1,0 +1,598 @@
+{
+  "products": [
+    {
+      "id": "camiseta-letz-bora-algodao",
+      "slug": "camiseta-letz-bora-algodao",
+      "name": "Camiseta LETZ BORA",
+      "priceCents": 10000,
+      "status": "active",
+      "position": -2,
+      "image": "/img/produtos/c1-camiseta-costas-1600.webp",
+      "variants": [
+        {
+          "id": "c1cam-pto-pp",
+          "sku": "C1CAM-PTO-PP",
+          "color": "Preto",
+          "size": "PP",
+          "priceCents": null,
+          "stock": 15,
+          "position": 0
+        },
+        {
+          "id": "c1cam-pto-p",
+          "sku": "C1CAM-PTO-P",
+          "color": "Preto",
+          "size": "P",
+          "priceCents": null,
+          "stock": 20,
+          "position": 1
+        },
+        {
+          "id": "c1cam-pto-m",
+          "sku": "C1CAM-PTO-M",
+          "color": "Preto",
+          "size": "M",
+          "priceCents": null,
+          "stock": 40,
+          "position": 2
+        },
+        {
+          "id": "c1cam-pto-g",
+          "sku": "C1CAM-PTO-G",
+          "color": "Preto",
+          "size": "G",
+          "priceCents": null,
+          "stock": 20,
+          "position": 3
+        },
+        {
+          "id": "c1cam-pto-gg",
+          "sku": "C1CAM-PTO-GG",
+          "color": "Preto",
+          "size": "GG",
+          "priceCents": null,
+          "stock": 5,
+          "position": 4
+        }
+      ]
+    },
+    {
+      "id": "regata-cropped-bora",
+      "slug": "regata-cropped-bora",
+      "name": "Regata Cropped BORA",
+      "priceCents": 12000,
+      "status": "active",
+      "position": -1,
+      "image": "/img/produtos/c1-cropped-preta-frente-1600.webp",
+      "variants": [
+        {
+          "id": "c1crop-pto-pp",
+          "sku": "C1CROP-PTO-PP",
+          "color": "Preto",
+          "size": "PP",
+          "priceCents": null,
+          "stock": 20,
+          "position": 0
+        },
+        {
+          "id": "c1crop-pto-p",
+          "sku": "C1CROP-PTO-P",
+          "color": "Preto",
+          "size": "P",
+          "priceCents": null,
+          "stock": 45,
+          "position": 1
+        },
+        {
+          "id": "c1crop-pto-m",
+          "sku": "C1CROP-PTO-M",
+          "color": "Preto",
+          "size": "M",
+          "priceCents": null,
+          "stock": 30,
+          "position": 2
+        },
+        {
+          "id": "c1crop-pto-g",
+          "sku": "C1CROP-PTO-G",
+          "color": "Preto",
+          "size": "G",
+          "priceCents": null,
+          "stock": 5,
+          "position": 3
+        }
+      ]
+    },
+    {
+      "id": "camiseta-dri-fit-bora",
+      "slug": "camiseta-dri-fit-bora",
+      "name": "Camiseta Dri-Fit BORA",
+      "priceCents": 14900,
+      "status": "draft",
+      "position": 1,
+      "image": "/img/produtos/camiseta-preta-par-1600.webp",
+      "variants": [
+        {
+          "id": "drifit-pto-pp",
+          "sku": "DRIFIT-PTO-PP",
+          "color": "Preto",
+          "size": "PP",
+          "priceCents": null,
+          "stock": 8,
+          "position": 0
+        },
+        {
+          "id": "drifit-pto-p",
+          "sku": "DRIFIT-PTO-P",
+          "color": "Preto",
+          "size": "P",
+          "priceCents": null,
+          "stock": 24,
+          "position": 1
+        },
+        {
+          "id": "drifit-pto-m",
+          "sku": "DRIFIT-PTO-M",
+          "color": "Preto",
+          "size": "M",
+          "priceCents": null,
+          "stock": 24,
+          "position": 2
+        },
+        {
+          "id": "drifit-pto-g",
+          "sku": "DRIFIT-PTO-G",
+          "color": "Preto",
+          "size": "G",
+          "priceCents": null,
+          "stock": 24,
+          "position": 3
+        },
+        {
+          "id": "drifit-pto-gg",
+          "sku": "DRIFIT-PTO-GG",
+          "color": "Preto",
+          "size": "GG",
+          "priceCents": null,
+          "stock": 24,
+          "position": 4
+        },
+        {
+          "id": "drifit-pto-xgg",
+          "sku": "DRIFIT-PTO-XGG",
+          "color": "Preto",
+          "size": "XGG",
+          "priceCents": null,
+          "stock": 6,
+          "position": 5
+        },
+        {
+          "id": "drifit-neo-pp",
+          "sku": "DRIFIT-NEO-PP",
+          "color": "Verde Neon",
+          "size": "PP",
+          "priceCents": null,
+          "stock": 8,
+          "position": 6
+        },
+        {
+          "id": "drifit-neo-p",
+          "sku": "DRIFIT-NEO-P",
+          "color": "Verde Neon",
+          "size": "P",
+          "priceCents": null,
+          "stock": 24,
+          "position": 7
+        },
+        {
+          "id": "drifit-neo-m",
+          "sku": "DRIFIT-NEO-M",
+          "color": "Verde Neon",
+          "size": "M",
+          "priceCents": null,
+          "stock": 24,
+          "position": 8
+        },
+        {
+          "id": "drifit-neo-g",
+          "sku": "DRIFIT-NEO-G",
+          "color": "Verde Neon",
+          "size": "G",
+          "priceCents": null,
+          "stock": 24,
+          "position": 9
+        },
+        {
+          "id": "drifit-neo-gg",
+          "sku": "DRIFIT-NEO-GG",
+          "color": "Verde Neon",
+          "size": "GG",
+          "priceCents": null,
+          "stock": 24,
+          "position": 10
+        },
+        {
+          "id": "drifit-neo-xgg",
+          "sku": "DRIFIT-NEO-XGG",
+          "color": "Verde Neon",
+          "size": "XGG",
+          "priceCents": null,
+          "stock": 6,
+          "position": 11
+        }
+      ]
+    },
+    {
+      "id": "corta-vento-bora",
+      "slug": "corta-vento-bora",
+      "name": "Corta-vento BORA",
+      "priceCents": 38900,
+      "status": "draft",
+      "position": 2,
+      "image": "/img/produtos/corta-vento-frente-1600.webp",
+      "variants": [
+        {
+          "id": "cortavento-pb-p",
+          "sku": "CORTAVENTO-PB-P",
+          "color": "Preto e Branco",
+          "size": "P",
+          "priceCents": null,
+          "stock": 12,
+          "position": 0
+        },
+        {
+          "id": "cortavento-pb-m",
+          "sku": "CORTAVENTO-PB-M",
+          "color": "Preto e Branco",
+          "size": "M",
+          "priceCents": null,
+          "stock": 12,
+          "position": 1
+        },
+        {
+          "id": "cortavento-pb-g",
+          "sku": "CORTAVENTO-PB-G",
+          "color": "Preto e Branco",
+          "size": "G",
+          "priceCents": null,
+          "stock": 12,
+          "position": 2
+        },
+        {
+          "id": "cortavento-pb-gg",
+          "sku": "CORTAVENTO-PB-GG",
+          "color": "Preto e Branco",
+          "size": "GG",
+          "priceCents": null,
+          "stock": 12,
+          "position": 3
+        },
+        {
+          "id": "cortavento-pb-xgg",
+          "sku": "CORTAVENTO-PB-XGG",
+          "color": "Preto e Branco",
+          "size": "XGG",
+          "priceCents": null,
+          "stock": 3,
+          "position": 4
+        }
+      ]
+    },
+    {
+      "id": "macaquinho-tri-bora",
+      "slug": "macaquinho-tri-bora",
+      "name": "Macaquinho Tri BORA",
+      "priceCents": 54900,
+      "status": "draft",
+      "position": 3,
+      "image": "/img/produtos/macaquinho-branco-1600.webp",
+      "variants": [
+        {
+          "id": "macaquinho-bco-p",
+          "sku": "MACAQUINHO-BCO-P",
+          "color": "Branco",
+          "size": "P",
+          "priceCents": null,
+          "stock": 8,
+          "position": 0
+        },
+        {
+          "id": "macaquinho-bco-m",
+          "sku": "MACAQUINHO-BCO-M",
+          "color": "Branco",
+          "size": "M",
+          "priceCents": null,
+          "stock": 8,
+          "position": 1
+        },
+        {
+          "id": "macaquinho-bco-g",
+          "sku": "MACAQUINHO-BCO-G",
+          "color": "Branco",
+          "size": "G",
+          "priceCents": null,
+          "stock": 8,
+          "position": 2
+        },
+        {
+          "id": "macaquinho-bco-gg",
+          "sku": "MACAQUINHO-BCO-GG",
+          "color": "Branco",
+          "size": "GG",
+          "priceCents": null,
+          "stock": 8,
+          "position": 3
+        },
+        {
+          "id": "macaquinho-pto-p",
+          "sku": "MACAQUINHO-PTO-P",
+          "color": "Preto",
+          "size": "P",
+          "priceCents": null,
+          "stock": 8,
+          "position": 4
+        },
+        {
+          "id": "macaquinho-pto-m",
+          "sku": "MACAQUINHO-PTO-M",
+          "color": "Preto",
+          "size": "M",
+          "priceCents": null,
+          "stock": 8,
+          "position": 5
+        },
+        {
+          "id": "macaquinho-pto-g",
+          "sku": "MACAQUINHO-PTO-G",
+          "color": "Preto",
+          "size": "G",
+          "priceCents": null,
+          "stock": 8,
+          "position": 6
+        },
+        {
+          "id": "macaquinho-pto-gg",
+          "sku": "MACAQUINHO-PTO-GG",
+          "color": "Preto",
+          "size": "GG",
+          "priceCents": null,
+          "stock": 8,
+          "position": 7
+        }
+      ]
+    },
+    {
+      "id": "bone-five-panel-bora",
+      "slug": "bone-five-panel-bora",
+      "name": "Boné Five Panel BORA",
+      "priceCents": 13900,
+      "status": "draft",
+      "position": 4,
+      "image": "/img/produtos/bone-five-panel-1600.webp",
+      "variants": [
+        {
+          "id": "bone-pto-u",
+          "sku": "BONE-PTO-U",
+          "color": "Preto",
+          "size": "U",
+          "priceCents": null,
+          "stock": 30,
+          "position": 0
+        }
+      ]
+    },
+    {
+      "id": "meia-bora-cano-alto",
+      "slug": "meia-bora-cano-alto",
+      "name": "Meia BORA Cano Alto",
+      "priceCents": 5900,
+      "status": "draft",
+      "position": 5,
+      "image": "/img/produtos/meia-neon-1600.webp",
+      "variants": [
+        {
+          "id": "meia-neo-34-38",
+          "sku": "MEIA-NEO-34-38",
+          "color": "Verde Neon",
+          "size": "34-38",
+          "priceCents": null,
+          "stock": 40,
+          "position": 0
+        },
+        {
+          "id": "meia-neo-39-43",
+          "sku": "MEIA-NEO-39-43",
+          "color": "Verde Neon",
+          "size": "39-43",
+          "priceCents": null,
+          "stock": 40,
+          "position": 1
+        },
+        {
+          "id": "meia-pto-34-38",
+          "sku": "MEIA-PTO-34-38",
+          "color": "Preto",
+          "size": "34-38",
+          "priceCents": null,
+          "stock": 40,
+          "position": 2
+        },
+        {
+          "id": "meia-pto-39-43",
+          "sku": "MEIA-PTO-39-43",
+          "color": "Preto",
+          "size": "39-43",
+          "priceCents": null,
+          "stock": 40,
+          "position": 3
+        },
+        {
+          "id": "meia-bco-34-38",
+          "sku": "MEIA-BCO-34-38",
+          "color": "Branco",
+          "size": "34-38",
+          "priceCents": null,
+          "stock": 40,
+          "position": 4
+        },
+        {
+          "id": "meia-bco-39-43",
+          "sku": "MEIA-BCO-39-43",
+          "color": "Branco",
+          "size": "39-43",
+          "priceCents": null,
+          "stock": 40,
+          "position": 5
+        }
+      ]
+    },
+    {
+      "id": "kit-letz-bora",
+      "slug": "kit-letz-bora",
+      "name": "Kit letz BORA",
+      "priceCents": 27900,
+      "status": "draft",
+      "position": 6,
+      "image": "/img/produtos/camiseta-neon-par-1600.webp",
+      "variants": [
+        {
+          "id": "kit-pto-pp",
+          "sku": "KIT-PTO-PP",
+          "color": "Preto",
+          "size": "PP",
+          "priceCents": null,
+          "stock": 4,
+          "position": 0
+        },
+        {
+          "id": "kit-pto-p",
+          "sku": "KIT-PTO-P",
+          "color": "Preto",
+          "size": "P",
+          "priceCents": null,
+          "stock": 15,
+          "position": 1
+        },
+        {
+          "id": "kit-pto-m",
+          "sku": "KIT-PTO-M",
+          "color": "Preto",
+          "size": "M",
+          "priceCents": null,
+          "stock": 15,
+          "position": 2
+        },
+        {
+          "id": "kit-pto-g",
+          "sku": "KIT-PTO-G",
+          "color": "Preto",
+          "size": "G",
+          "priceCents": null,
+          "stock": 15,
+          "position": 3
+        },
+        {
+          "id": "kit-pto-gg",
+          "sku": "KIT-PTO-GG",
+          "color": "Preto",
+          "size": "GG",
+          "priceCents": null,
+          "stock": 15,
+          "position": 4
+        },
+        {
+          "id": "kit-pto-xgg",
+          "sku": "KIT-PTO-XGG",
+          "color": "Preto",
+          "size": "XGG",
+          "priceCents": null,
+          "stock": 4,
+          "position": 5
+        },
+        {
+          "id": "kit-neo-pp",
+          "sku": "KIT-NEO-PP",
+          "color": "Verde Neon",
+          "size": "PP",
+          "priceCents": null,
+          "stock": 4,
+          "position": 6
+        },
+        {
+          "id": "kit-neo-p",
+          "sku": "KIT-NEO-P",
+          "color": "Verde Neon",
+          "size": "P",
+          "priceCents": null,
+          "stock": 15,
+          "position": 7
+        },
+        {
+          "id": "kit-neo-m",
+          "sku": "KIT-NEO-M",
+          "color": "Verde Neon",
+          "size": "M",
+          "priceCents": null,
+          "stock": 15,
+          "position": 8
+        },
+        {
+          "id": "kit-neo-g",
+          "sku": "KIT-NEO-G",
+          "color": "Verde Neon",
+          "size": "G",
+          "priceCents": null,
+          "stock": 15,
+          "position": 9
+        },
+        {
+          "id": "kit-neo-gg",
+          "sku": "KIT-NEO-GG",
+          "color": "Verde Neon",
+          "size": "GG",
+          "priceCents": null,
+          "stock": 15,
+          "position": 10
+        },
+        {
+          "id": "kit-neo-xgg",
+          "sku": "KIT-NEO-XGG",
+          "color": "Verde Neon",
+          "size": "XGG",
+          "priceCents": null,
+          "stock": 4,
+          "position": 11
+        }
+      ]
+    }
+  ],
+  "coupons": [
+    {
+      "code": "LETZBORA",
+      "kind": "percent",
+      "value": 10,
+      "minSubtotalCents": 0,
+      "active": true,
+      "expiresAt": null,
+      "maxUses": null
+    },
+    {
+      "code": "FRETEBORA",
+      "kind": "free_shipping",
+      "value": 0,
+      "minSubtotalCents": 15000,
+      "active": true,
+      "expiresAt": null,
+      "maxUses": null
+    },
+    {
+      "code": "BORA90",
+      "kind": "percent",
+      "value": 90,
+      "minSubtotalCents": 0,
+      "active": true,
+      "expiresAt": "2026-11-27T23:59:59-03:00",
+      "maxUses": 10
+    }
+  ]
+}

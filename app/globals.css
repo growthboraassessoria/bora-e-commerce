@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+/* BORA · Loja. Base branca, preto na tipografia, verde #CEFF00 como sinal (marca-texto, botão, selo). */
+@theme {
+  --color-ink: #0a0a0a;
+  --color-ink-2: rgba(10, 10, 10, 0.66);
+  --color-ink-3: rgba(10, 10, 10, 0.46);
+  --color-paper: #ffffff;
+  --color-sand: #f5f5f1;
+  --color-sand-2: #ebebe6;
+  --color-line: rgba(10, 10, 10, 0.1);
+  --color-line-strong: rgba(10, 10, 10, 0.28);
+  --color-neon: #ceff00;
+  --color-neon-2: #c4de47;
+  --color-neon-deep: #5c6e00;
+  --color-danger: #b42318;
+  --font-sans: var(--font-altone), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-card: 0 24px 64px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-float: 0 40px 100px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(0, 0, 0, 0.06);
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-rise: rise 0.9s var(--ease-out-expo) both;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+
+:root {
+  --gutter: clamp(16px, 4vw, 64px);
+  --header-h: 64px;
+  color-scheme: light;
+}
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+/* Âncoras (#pecas, #retirada, etapas do checkout) param abaixo do cabeçalho fixo. */
+[id] { scroll-margin-top: calc(var(--header-h) + 48px); }
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+::selection { background: var(--color-neon); color: #000; }
+
+@layer components {
+  .wrap { width: 100%; max-width: 1480px; margin-inline: auto; padding-inline: var(--gutter); }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-3); }
+  .display { font-weight: 900; letter-spacing: -0.035em; line-height: 0.92; text-transform: uppercase; }
+  .mark { background: linear-gradient(transparent 58%, var(--color-neon) 58%, var(--color-neon) 92%, transparent 92%); padding-inline: 0.06em; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    height: 52px; padding-inline: 28px; border-radius: 999px;
+    font-weight: 700; font-size: 15px; letter-spacing: 0.01em;
+    transition: transform 0.25s var(--ease-out-expo), background 0.2s, color 0.2s, box-shadow 0.25s, opacity 0.2s;
+    white-space: nowrap; user-select: none;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled { opacity: 0.45; pointer-events: none; }
+  .btn-primary { background: var(--color-ink); color: #fff; }
+  .btn-primary:hover { box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); transform: translateY(-1px); }
+  .btn-neon { background: var(--color-neon); color: #000; }
+  .btn-neon:hover { box-shadow: 0 12px 34px rgba(170, 210, 0, 0.45); transform: translateY(-1px); }
+  .btn-ghost { background: transparent; color: var(--color-ink); box-shadow: inset 0 0 0 1.5px var(--color-line-strong); }
+  .btn-ghost:hover { box-shadow: inset 0 0 0 1.5px var(--color-ink); }
+  .btn-lg { height: 60px; padding-inline: 36px; font-size: 16px; }
+  .btn-block { width: 100%; }
+
+  .field { display: grid; gap: 6px; }
+  .field > span { font-size: 13px; font-weight: 500; color: var(--color-ink-2); }
+  .input {
+    height: 50px; width: 100%; border-radius: 12px; padding-inline: 14px;
+    background: #fff; border: 1.5px solid var(--color-line); font-size: 16px; color: var(--color-ink);
+    transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+  }
+  .input:focus { border-color: var(--color-ink); box-shadow: 0 0 0 4px rgba(206, 255, 0, 0.55); }
+  .input[aria-invalid="true"] { border-color: var(--color-danger); }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px; height: 28px; padding-inline: 12px; border-radius: 999px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .chip-neon { background: var(--color-neon); color: #000; }
+  .chip-ink { background: var(--color-ink); color: #fff; }
+  .chip-soft { background: var(--color-sand); color: var(--color-ink-2); }
+
+  .card { background: #fff; border-radius: 24px; box-shadow: inset 0 0 0 1px var(--color-line); }
+  .prose-bora h2 { font-size: 22px; font-weight: 700; margin-top: 40px; margin-bottom: 12px; letter-spacing: -0.01em; }
+  .prose-bora h3 { font-size: 17px; font-weight: 700; margin-top: 24px; margin-bottom: 8px; }
+  .prose-bora p, .prose-bora li { color: var(--color-ink-2); line-height: 1.7; font-size: 16px; }
+  .prose-bora p + p { margin-top: 12px; }
+  .prose-bora ul { list-style: disc; padding-left: 20px; display: grid; gap: 6px; margin-top: 8px; }
+  .prose-bora a { text-decoration: underline; text-underline-offset: 3px; }
+  .prose-bora strong { color: var(--color-ink); }
+}
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
+
+/* ---------- efeitos ---------- */
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes processing-draw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+@keyframes processing-bar { from { width: 0%; } to { width: 100%; } }
+.processing-draw { stroke-dashoffset: 100; animation: processing-draw 5s cubic-bezier(.45,.05,.35,1) forwards; }
+.processing-bar { width: 0%; animation: processing-bar 5s cubic-bezier(.45,.05,.35,1) forwards; }
+
+/* Mochila: balança no hover e pula quando entra peça */
+@keyframes bag-swing { 0%,100% { transform: rotate(0); } 20% { transform: rotate(-14deg); } 45% { transform: rotate(10deg); } 70% { transform: rotate(-6deg); } 85% { transform: rotate(3deg); } }
+@keyframes bag-drop { 0% { transform: translateY(0) scale(1); } 25% { transform: translateY(-9px) scale(1.12) rotate(-8deg); } 50% { transform: translateY(2px) scale(.94) rotate(6deg); } 72% { transform: translateY(-3px) scale(1.04) rotate(-3deg); } 100% { transform: none; } }
+@keyframes bag-glow { 0%,100% { filter: drop-shadow(0 0 0 rgba(206,255,0,0)); } 40% { filter: drop-shadow(0 0 10px rgba(206,255,0,.95)); } }
+@keyframes pop-in { 0% { transform: scale(0); } 60% { transform: scale(1.35); } 100% { transform: scale(1); } }
+.bag { transform-origin: 50% 12%; display: inline-block; }
+.bag-btn:hover .bag { animation: bag-swing .9s ease-in-out; }
+.bag-added .bag { animation: bag-drop .7s cubic-bezier(.3,1.4,.5,1), bag-glow .9s ease-out; }
+.bag-added .bag-count { animation: pop-in .45s cubic-bezier(.3,1.6,.5,1); }
+
+/* Troca de tela: sticker letz BORAAA!! */
+@keyframes route-veil { 0% { opacity: 0; } 18% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes route-sticker { 0% { transform: scale(.2) rotate(-28deg); opacity: 0; } 30% { transform: scale(1.12) rotate(6deg); opacity: 1; } 45% { transform: scale(.96) rotate(-3deg); } 60% { transform: scale(1) rotate(0); } 82% { transform: scale(1) rotate(0); opacity: 1; } 100% { transform: scale(1.5) rotate(4deg); opacity: 0; } }
+@keyframes route-ring { 0% { transform: scale(.3); opacity: .9; } 100% { transform: scale(2.6); opacity: 0; } }
+.route-veil { animation: route-veil .95s ease-out forwards; }
+.route-sticker { animation: route-sticker .95s cubic-bezier(.2,.9,.3,1) forwards; }
+.route-ring { animation: route-ring .8s ease-out forwards; }
+
+/* Pino do mapa de retirada */
+.pickup-pin { position: absolute; width: 0; height: 0; }
+.pickup-pin__dot { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 999px; background: #ceff00; box-shadow: 0 0 0 4px #0a0a0a, 0 0 24px 6px rgba(206,255,0,.55); }
+.pickup-pin__pulse { position: absolute; left: -26px; top: -26px; width: 52px; height: 52px; border-radius: 999px; border: 2px solid #ceff00; animation: pin-pulse 1.8s ease-out infinite; }
+.pickup-pin__label { position: absolute; left: 18px; top: -16px; white-space: nowrap; background: #ceff00; color: #000; font: 800 12px/1 var(--font-sans); letter-spacing: .06em; text-transform: uppercase; padding: 8px 10px; border-radius: 999px; box-shadow: 0 8px 24px rgba(0,0,0,.45); }
+@keyframes pin-pulse { from { transform: scale(.35); opacity: 1; } to { transform: scale(1.6); opacity: 0; } }

@@ -1,0 +1,18 @@
+type P = { className?: string; size?: number };
+const base = (size = 20) => ({ width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, "aria-hidden": true });
+export const BagIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z" /><path d="M9 8V6.5a3 3 0 0 1 6 0V8" /></svg>);
+export const SearchIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><circle cx="11" cy="11" r="6.5" /><path d="m20 20-4-4" /></svg>);
+export const MenuIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><path d="M4 7h16M4 12h16M4 17h10" /></svg>);
+export const CloseIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><path d="M6 6l12 12M18 6 6 18" /></svg>);
+export const ArrowIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><path d="M5 12h14M13 6l6 6-6 6" /></svg>);
+export const PlusIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><path d="M12 5v14M5 12h14" /></svg>);
+export const MinusIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><path d="M5 12h14" /></svg>);
+export const TruckIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><path d="M3 6h11v10H3zM14 9h4l3 3v4h-7" /><circle cx="7" cy="17.5" r="1.8" /><circle cx="17" cy="17.5" r="1.8" /></svg>);
+export const ShieldIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-4" /></svg>);
+export const ReturnIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><path d="M9 14 4 9l5-5" /><path d="M4 9h10a6 6 0 0 1 0 12h-3" /></svg>);
+export const PixIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><path d="m12 3 4.5 4.5L12 12 7.5 7.5 12 3ZM12 12l4.5 4.5L12 21l-4.5-4.5L12 12ZM3 12l4.5-4.5L12 12l-4.5 4.5L3 12ZM12 12l4.5-4.5L21 12l-4.5 4.5L12 12Z" /></svg>);
+export const CardIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><rect x="3" y="5.5" width="18" height="13" rx="2.5" /><path d="M3 10h18M7 15h3" /></svg>);
+export const BarcodeIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><path d="M4 6v12M7 6v12M10 6v12M14 6v12M17 6v12M20 6v12" /></svg>);
+export const CheckIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>);
+export const LockIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><rect x="5" y="10.5" width="14" height="10" rx="2" /><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" /></svg>);
+export const TrashIcon = ({ className, size }: P) => (<svg {...base(size)} className={className}><path d="M5 7h14M10 11v6M14 11v6M6.5 7l1 12.5a1.5 1.5 0 0 0 1.5 1.5h6a1.5 1.5 0 0 0 1.5-1.5l1-12.5M9.5 7V4.5h5V7" /></svg>);

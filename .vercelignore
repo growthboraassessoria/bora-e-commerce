@@ -1,0 +1,8 @@
+# Fica fora do deploy: dados e prints de teste, renders originais, segredos locais e build local.
+.data
+.qa
+assets-src
+.env*.local
+.env
+.next
+supabase/.temp
