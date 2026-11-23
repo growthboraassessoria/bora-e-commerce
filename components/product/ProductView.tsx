@@ -270,7 +270,7 @@ export default function ProductView({ p }: { p: Product }) {
         </div>
 
         <div className="mt-10">
-          <p className="text-[17px] sm:text-lg leading-relaxed text-ink-2">{p.description}</p>
+          <p className="text-[17px] sm:text-lg leading-relaxed text-ink-2 whitespace-pre-line">{p.description}</p>
           <ul className="mt-6 grid grid-cols-1 min-[400px]:grid-cols-2 gap-x-3 gap-y-2.5">
             {p.highlights.map((h) => <li key={h} className="flex items-center gap-2 text-sm font-bold"><span className="size-5 rounded-full bg-neon grid place-items-center"><CheckIcon size={12} /></span>{h}</li>)}
           </ul>

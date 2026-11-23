@@ -6,6 +6,7 @@ import { track } from "@/lib/analytics";
 import { useQuote } from "@/lib/useQuote";
 import type { Product } from "@/lib/types";
 import LineItem from "@/components/ui/LineItem";
+import ExtraOffer from "@/components/ui/ExtraOffer";
 import PaymentIcons from "@/components/ui/PaymentIcons";
 import { PICKUP, pickupWhen } from "@/lib/presale";
 import ProductCard from "@/components/ui/ProductCard";
@@ -48,6 +49,7 @@ export default function CartPage({ suggestions }: { suggestions: Product[] }) {
           <div className="rounded-2xl bg-sand p-5 text-sm"><strong>Retirada no evento · grátis</strong><br /><span className="text-ink-2">{PICKUP.address} · {PICKUP.city} · {pickupWhen()}</span></div>
           {quote?.stockIssues.length ? <div className="mt-4 rounded-2xl bg-danger/10 text-danger p-4 text-sm font-bold">{quote.stockIssues.map((s) => <p key={s}>{s}</p>)}</div> : null}
           <div className="mt-2 divide-y divide-line">{(quote?.lines ?? []).map((l) => <LineItem key={l.variantId} line={l} />)}</div>
+          {(quote?.extras ?? []).filter((o) => !o.inCart).map((o) => <ExtraOffer key={o.productId} offer={o} location="sacola" className="mt-4" />)}
         </div>
         <aside className="card p-5 sm:p-6 lg:sticky lg:top-[calc(var(--header-h)+16px)]">
           <p className="text-xl font-black uppercase tracking-tight">Resumo</p>

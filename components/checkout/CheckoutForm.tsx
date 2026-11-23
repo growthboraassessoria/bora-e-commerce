@@ -12,6 +12,7 @@ import { formatCpf, formatPhone, isValidCpf } from "@/lib/cpf";
 import { emailSuggestion, isEmail } from "@/lib/smart";
 import { PICKUP, pickupWhen } from "@/lib/presale";
 import PaymentIcons from "@/components/ui/PaymentIcons";
+import ExtraOffer from "@/components/ui/ExtraOffer";
 import ProcessingOverlay, { MIN_PROCESSING_MS } from "./ProcessingOverlay";
 import { placeOrder } from "@/app/(foco)/checkout/actions";
 import { CardIcon, CheckIcon, LockIcon, PixIcon, PlusIcon, ShieldIcon } from "@/components/ui/Icons";
@@ -535,6 +536,9 @@ export default function CheckoutForm({ error: initialError, suggestions, initial
                 )}
                 <PaymentIcons className={`mt-4 ${method === "card" ? "px-1 sm:px-0" : ""}`} only={method === "pix" ? ["Pix"] : rules.brands.map((b) => BRAND_NAMES[b])} />
               </div>
+
+              {/* Leve junto (order bump): logo antes de pagar, um toque adiciona ao pedido. */}
+              {(quote?.extras ?? []).map((o) => <ExtraOffer key={o.productId} offer={o} location="checkout" className="mt-5 lg:mt-6" />)}
 
               <label className={`mt-5 lg:mt-6 flex items-start gap-3 text-sm cursor-pointer rounded-2xl bg-white ring-1 p-4 lg:p-0 lg:bg-transparent lg:ring-0 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ink ${errors.accept ? "ring-danger/50" : "ring-line"}`}>
                 <input type="checkbox" checked={accept} onChange={(e) => { setAccept(e.target.checked); setErrors(({ accept: _, ...r }) => r); }} className="sr-only" />

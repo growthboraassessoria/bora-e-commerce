@@ -12,6 +12,8 @@ export const CATEGORIES: Category[] = [
   { id: "triathlon", slug: "triathlon", name: "Triathlon", description: "Macaquinho de prova para nadar, pedalar e correr sem trocar de roupa.", image: img("macaquinho-duo"), position: 3 },
   { id: "acessorios", slug: "acessorios", name: "Acessórios", description: "Boné five panel e meias de compressão leve. Detalhe que se vê de longe.", image: img("bone-five-panel"), position: 4 },
   { id: "kits", slug: "kits", name: "Kits", description: "Combinações prontas com preço de kit. O jeito mais rápido de vestir BORA.", image: img("camiseta-neon-par"), position: 5 },
+  // Coleção dos extras (gel etc.). Fica fora da vitrine: o extra aparece como oferta na sacola e no checkout (lib/extras.ts).
+  { id: "nutricao", slug: "nutricao", name: "Nutrição", description: "Energia e hidratação para o treino e para a prova.", image: img("carbs-gel-pack"), position: 6 },
 ];
 
 const SHIRT_SIZES = ["PP", "P", "M", "G", "GG", "XGG"];
@@ -269,10 +271,53 @@ const ALL_PRODUCTS: Product[] = [
     variants: variants("kit", [PRETO, NEON], SHIRT_SIZES, (_c, s) => (s === "XGG" || s === "PP" ? 4 : 15)),
     position: 6,
   },
+  // ---------- Extra (oferta "leve junto" na sacola e no checkout). Pedido do Alex em 23/11/2026. ----------
+  {
+    id: "carbs-gel-bora-maracuja",
+    slug: "carbs-gel-bora-maracuja",
+    name: "CARBS Gel BORA - Maracujá - Pack com 5 unidades",
+    subtitle: "5 sachês de 30g · sem cafeína",
+    description: [
+      "Desconto já aplicado: de R$ 64,50 por R$ 38,70, 40% de desconto. Menos de R$ 8 por sachê, e você retira junto com o seu pedido na Pampulha.",
+      "CARBS Gel BORA é o novo lançamento da nossa assessoria, exclusivo para nossos atletas! Ele entrega energia rápida e hidratação com carboidratos e eletrólitos para melhor desempenho nos treinos e provas. É muito mais tecnologia e rendimento para os seus treinos e provas!",
+      "O CARBS Gel BORA é um gel de carboidrato pensado para acompanhar a rotina esportiva com praticidade, leveza e energia imediata. Sua fórmula combina maltodextrina, glicose e frutose com eletrólitos essenciais para auxiliar na manutenção da energia e do desempenho durante o exercício, além de contribuir para a hidratação ao longo da atividade. Com textura fluida, sabor leve e fácil digestibilidade, é uma opção confortável para diferentes tipos de treino, desde sessões curtas até exercícios prolongados e provas.",
+      "O sabor MARACUJÁ é o mais pedido entre nossos atletas e a composição com 21g de carboidratos, 200mg de sódio e sem cafeína é perfeita para o seu dia a dia. O pack contém 5 unidades que não podem ser vendidas separadamente.",
+    ].join("\n\n"),
+    categorySlug: "nutricao",
+    priceCents: 3870,
+    compareAtCents: 6450,
+    badges: ["40% off", "Lançamento"],
+    tags: ["extra", "nutricao", "gel"],
+    featured: false,
+    highlights: ["21g de carboidratos", "200mg de sódio", "Sem cafeína", "Sem glúten"],
+    details: [
+      { label: "Sachês por pack", value: "5" },
+      { label: "Porção", value: "30g (1 sachê) · 84 kcal" },
+      { label: "Carboidratos", value: "21g por sachê" },
+      { label: "Sódio", value: "200mg por sachê" },
+      { label: "Cafeína", value: "0mg" },
+      { label: "Sabor", value: "Maracujá" },
+      { label: "Fabricante", value: "dobro" },
+    ],
+    care: "Consumir 5 min antes ou a cada 45 min de exercício, uma porção por vez. Conservar fechado, ao abrigo da luz, calor e umidade; depois de aberto, consumir na hora. Não é medicamento. Produto indicado para atletas maiores de 19 anos. Consulte um profissional da saúde.",
+    images: [
+      { url: img("carbs-gel-pack"), alt: "CARBS Gel BORA sabor maracujá: caixa e 5 sachês de 30g" },
+      { url: img("carbs-gel-sache"), alt: "Sachê do CARBS Gel BORA, frente e verso" },
+      { url: img("carbs-gel-composicao"), alt: "O que o CARBS Gel BORA contém e não contém" },
+      { url: img("carbs-gel-tabela"), alt: "Tabela nutricional do CARBS Gel BORA" },
+      { url: img("carbs-gel-caixa"), alt: "Caixa do CARBS Gel BORA, frente e verso" },
+    ],
+    options: [{ name: "Sabor", values: [{ value: "Maracujá" }] }],
+    variants: [
+      // ESTOQUE PROVISÓRIO: confirmar com o Alex quantos packs há para vender.
+      { id: "carbs-gel-mrc-5", sku: "CARBS-GEL-MRC-5", color: "Maracujá", colorHex: "#c8e63c", size: "U", priceCents: null, stock: 100, options: { Sabor: "Maracujá" }, barcode: "7898978610082" },
+    ],
+    position: 7,
+  },
 ];
 
-// Só as peças da Coleção do Alex (pasta "Coleção Bora Assessoria v1") ficam à venda. O resto fica oculto (draft), pronto para voltar.
-export const VISIBLE_SLUGS = ["camiseta-letz-bora-algodao", "regata-cropped-bora"];
+// Só as peças da Coleção do Alex (pasta "Coleção Bora Assessoria v1") ficam à venda, mais os extras. O resto fica oculto (draft), pronto para voltar.
+export const VISIBLE_SLUGS = ["camiseta-letz-bora-algodao", "regata-cropped-bora", "carbs-gel-bora-maracuja"];
 export const PRODUCTS: Product[] = ALL_PRODUCTS.map((p) => ({ ...p, status: VISIBLE_SLUGS.includes(p.slug) ? "active" : "draft" }));
 
 // Cupons de exemplo (provisórios).

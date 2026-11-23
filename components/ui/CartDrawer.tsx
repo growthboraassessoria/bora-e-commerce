@@ -6,6 +6,7 @@ import { track } from "@/lib/analytics";
 import { useQuote } from "@/lib/useQuote";
 import { brl } from "@/lib/money";
 import LineItem from "./LineItem";
+import ExtraOffer from "./ExtraOffer";
 import { PICKUP } from "@/lib/presale";
 import { CloseIcon, LockIcon } from "./Icons";
 import CartBagIcon from "./CartBagIcon";
@@ -75,6 +76,7 @@ export default function CartDrawer() {
             </div>
             <div className={`flex-1 min-h-0 overflow-y-auto overscroll-contain px-5 sm:px-6 divide-y divide-line transition-opacity ${loading && !quote ? "opacity-40" : ""}`}>
               {priced.map((l) => <LineItem key={l.variantId} line={l} compact onNavigate={() => cart.close()} />)}
+              {(quote?.extras ?? []).filter((o) => !o.inCart).map((o) => <div key={o.productId} className="py-4"><ExtraOffer offer={o} location="gaveta" /></div>)}
               {!quote ? <p className="py-8 text-center text-ink-3">Carregando…</p> : null}
             </div>
             <footer className="shrink-0 border-t border-line px-5 sm:px-6 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:pb-[max(1.5rem,env(safe-area-inset-bottom))] bg-white">

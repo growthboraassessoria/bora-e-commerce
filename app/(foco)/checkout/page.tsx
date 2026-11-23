@@ -4,6 +4,7 @@ import { SALES_OPEN } from "@/lib/config";
 import SalesClosed from "@/components/ui/SalesClosed";
 import CheckoutForm, { type Recovery, type Suggestion } from "@/components/checkout/CheckoutForm";
 import { getAllProducts, getDiscountByCode, variantImage } from "@/lib/server/catalog";
+import { isExtra } from "@/lib/extras";
 import { getCheckoutForRecovery } from "@/lib/server/checkouts";
 import { paymentProvider } from "@/lib/server/payments";
 
@@ -32,7 +33,7 @@ export default async function CheckoutPage({ searchParams }: PageProps<"/checkou
 
   // Peças para a sugestão de frete grátis: a primeira cor de cada produto com estoque.
   const suggestions: Suggestion[] = (await getAllProducts())
-    .filter((p) => p.variants.some((v) => v.stock > 0) && !p.tags.includes("kit") && simpleOptions(p))
+    .filter((p) => p.variants.some((v) => v.stock > 0) && !p.tags.includes("kit") && !isExtra(p) && simpleOptions(p))
     .map((p) => {
       const color = p.variants.find((v) => v.stock > 0)!.color;
       const vs = p.variants.filter((v) => v.color === color).sort((a, b) => SIZE_ORDER.indexOf(a.size) - SIZE_ORDER.indexOf(b.size));

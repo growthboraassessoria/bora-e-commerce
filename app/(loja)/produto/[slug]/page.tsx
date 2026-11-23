@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import ProductView from "@/components/product/ProductView";
 import ProductCard from "@/components/ui/ProductCard";
 import { getAllProducts, getCategory, getProduct } from "@/lib/server/catalog";
+import { isExtra } from "@/lib/extras";
 import JsonLd from "@/components/seo/JsonLd";
 import { breadcrumbLd, pageMeta, productLd } from "@/lib/seo";
 
@@ -24,7 +25,7 @@ export default async function ProductPage({ params }: PageProps<"/produto/[slug]
   const p = await getProduct(slug);
   if (!p) notFound();
   const [category, all] = await Promise.all([getCategory(p.categorySlug), getAllProducts()]);
-  const related = all.filter((x) => x.id !== p.id).sort((a, b) => Number(b.categorySlug === p.categorySlug) - Number(a.categorySlug === p.categorySlug)).slice(0, 4);
+  const related = all.filter((x) => x.id !== p.id && !isExtra(x)).sort((a, b) => Number(b.categorySlug === p.categorySlug) - Number(a.categorySlug === p.categorySlug)).slice(0, 4);
 
   const crumbs = [{ name: "Início", path: "/" }, ...(category ? [{ name: category.name, path: `/colecao/${category.slug}` }] : []), { name: p.name, path: `/produto/${p.slug}` }];
 

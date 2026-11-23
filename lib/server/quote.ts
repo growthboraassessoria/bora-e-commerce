@@ -1,5 +1,6 @@
 import "server-only";
-import { getAutomaticDiscounts, getDiscountByCode, priceLines } from "./catalog";
+import { getAllProducts, getAutomaticDiscounts, getDiscountByCode, priceLines, variantImage } from "./catalog";
+import { isExtra, packUnits, type ExtraOffer } from "../extras";
 import { couponUsedByCpf } from "./orders";
 import { computeTotals, evaluateDiscount } from "../pricing";
 import { getPaymentRules } from "./settings";
@@ -21,6 +22,8 @@ export type Quote = {
   shipping: ShippingOption[];
   selectedShipping: ShippingOption;
   stockIssues: string[];
+  /** Extras para oferecer ("leve junto"): com estoque e só quando a sacola já tem outra peça (inCart = já entrou). */
+  extras: ExtraOffer[];
 };
 
 export type QuoteInput = {
@@ -95,5 +98,25 @@ export async function quote(input: QuoteInput): Promise<Quote> {
   const totals = best?.totals ?? computeTotals(lines, base);
   const discount = best ? applied(best.c, totals) : null;
   const stockIssues = lines.filter((l) => l.quantity > l.stock).map((l) => (l.stock <= 0 ? `${l.name} (${l.variantLabel}) esgotou.` : `${l.name} (${l.variantLabel}): só restam ${l.stock}.`));
-  return { lines, totals, coupon, discount, shipping, selectedShipping, stockIssues };
+  return { lines, totals, coupon, discount, shipping, selectedShipping, stockIssues, extras: await extraOffers(lines) };
+}
+
+async function extraOffers(lines: PricedLine[]): Promise<ExtraOffer[]> {
+  const all = await getAllProducts();
+  const extraIds = new Set(all.filter(isExtra).map((p) => p.id));
+  if (!lines.some((l) => !extraIds.has(l.productId))) return [];
+  const inCart = new Set(lines.map((l) => l.productId));
+  const out: ExtraOffer[] = [];
+  for (const p of all) {
+    if (!extraIds.has(p.id)) continue;
+    const line = lines.find((l) => l.productId === p.id);
+    const v = line ? p.variants.find((x) => x.id === line.variantId) : p.variants.find((x) => x.stock > 0);
+    if (!v) continue;
+    out.push({
+      productId: p.id, variantId: v.id, slug: p.slug, name: p.name, subtitle: p.subtitle,
+      image: variantImage(p, v).replace("-1600", "-800"), priceCents: v.priceCents ?? p.priceCents,
+      compareAtCents: v.compareAtCents ?? p.compareAtCents, units: packUnits(p), stock: v.stock, inCart: inCart.has(p.id),
+    });
+  }
+  return out;
 }

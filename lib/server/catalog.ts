@@ -6,6 +6,7 @@ import { readLocalCoupons, readLocalOrders, readLocalStock } from "./local-store
 import { readLocalCatalog } from "./local-catalog";
 import { mergeCatalog } from "../catalog-merge";
 import { optionsLabel, productOptions, variantOptions } from "../options";
+import { isExtra } from "../extras";
 import type { Category, Coupon, PricedLine, Product, ProductOption, Variant } from "../types";
 
 // ---------- mapeamento do banco (schema loja) ----------
@@ -107,7 +108,8 @@ export const getProduct = cache(async (slug: string) => (await getAllProducts())
 export type SortKey = "destaques" | "menor-preco" | "maior-preco" | "novidades";
 
 export async function queryProducts(opts: { category?: string; q?: string; sort?: SortKey; color?: string; size?: string; onlyAvailable?: boolean } = {}) {
-  let list = await getAllProducts();
+  // Extras (ex.: CARBS Gel) não entram na vitrine: são oferta da sacola e do checkout.
+  let list = (await getAllProducts()).filter((p) => !isExtra(p));
   if (opts.category) list = list.filter((p) => inCategory(p, opts.category!));
   if (opts.q) {
     const q = normalize(opts.q);
@@ -129,7 +131,7 @@ export async function queryProducts(opts: { category?: string; q?: string; sort?
 
 // Coleção: com o cadastro novo, vale o vínculo produto ↔ coleção (várias por produto).
 // Sem ele (banco sem a migration 0006), a categoria principal e as etiquetas com o slug da coleção (ex.: volta-18k).
-export const inCategory = (p: Product, slug: string) => (p.collections ? p.collections.includes(slug) : p.categorySlug === slug || p.tags.includes(slug));
+export const inCategory = (p: Product, slug: string) => !isExtra(p) && (p.collections ? p.collections.includes(slug) : (p.categorySlug === slug || p.tags.includes(slug)));
 
 export const normalize = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
