@@ -134,6 +134,8 @@ export type Order = {
   events?: OrderEvent[];
   /** Resumo do pagamento devolvido pela Pagar.me (ou simulado). Ver lib/payment-data.ts. */
   paymentData?: import("./payment-data").PaymentData | null;
+  /** De onde veio a compra: IP, CEP de cobrança e GPS (com permissão). Ver lib/geo.ts. */
+  geo?: import("./geo").OrderGeo | null;
   items: {
     variantId: string;
     productId: string;

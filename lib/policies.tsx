@@ -87,6 +87,7 @@ export const POLICIES: { slug: string; title: string; summary: string; body: Rea
           <li><strong>Compra:</strong> nome, e-mail, celular e CPF (para a nota fiscal e para conferir a retirada).</li>
           <li><strong>Retirada por outra pessoa:</strong> nome, CPF e celular de quem você indicar, usados só para conferir a entrega no evento.</li>
           <li><strong>Pagamento:</strong> forma de pagamento e status. Os dados do cartão vão direto para a Pagar.me e não passam pela BORA; no pedido ficam só a bandeira e os últimos dígitos.</li>
+          <li><strong>Localização da compra:</strong> no pedido guardamos a cidade e o estado aproximados pela sua conexão (IP) e, no cartão, o CEP, o bairro, a cidade e o estado do endereço de cobrança (sem rua e número). Se você tocar em “Compartilhar minha localização” no checkout e o navegador permitir, guardamos também a posição do aparelho (GPS). Isso é opcional, serve só para a BORA entender de onde vêm os pedidos e não muda nada na compra (legítimo interesse; o GPS, com o seu consentimento).</li>
           <li><strong>Navegação:</strong> os itens da sacola ficam guardados no seu próprio navegador. Também medimos o uso da loja de forma anônima (veja “Medição de navegação” abaixo).</li>
           <li><strong>Novidades:</strong> o e-mail, se você se cadastrar para receber os próximos drops.</li>
         </ul>

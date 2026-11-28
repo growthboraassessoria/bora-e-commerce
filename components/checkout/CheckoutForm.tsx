@@ -17,6 +17,8 @@ import ProcessingOverlay, { MIN_PROCESSING_MS } from "./ProcessingOverlay";
 import { placeOrder } from "@/app/(foco)/checkout/actions";
 import { CardIcon, CheckIcon, LockIcon, PixIcon, PlusIcon, ShieldIcon } from "@/components/ui/Icons";
 import CouponField from "./CouponField";
+import LocationShare from "./LocationShare";
+import type { GpsInput } from "@/lib/geo";
 import CardFields, { billingErrors, EMPTY_BILLING, EMPTY_CARD, type BillingState, type CardState } from "./CardFields";
 import { cardBrand, cardErrors, pagarmeCardEnabled, tokenizeCard } from "@/lib/pagarme-client";
 import { track } from "@/lib/analytics";
@@ -139,6 +141,8 @@ export default function CheckoutForm({ error: initialError, suggestions, initial
   // Cartão (Pagar.me): fica só na memória da página, nunca no rascunho.
   const [card, setCard] = useState<CardState>(EMPTY_CARD);
   const [billing, setBilling] = useState<BillingState>(EMPTY_BILLING);
+  // GPS: só existe se o cliente tocou em "Compartilhar minha localização" e o navegador deixou.
+  const [gps, setGps] = useState<GpsInput | null>(null);
   // Cartão sempre preenchido aqui no checkout. Com a Pagar.me ligada vira token; em demonstração só valida e simula.
   const cardLive = method === "card" && gateway === "pagarme" && pagarmeCardEnabled();
   const cardForm = method === "card";
@@ -281,6 +285,11 @@ export default function CheckoutForm({ error: initialError, suggestions, initial
         exclude: exclude.length ? exclude : undefined,
         expectedTotalCents: quote && !loading ? quote.totals.totalCents : undefined,
         checkoutToken: checkoutToken(false) ?? undefined,
+        // Localização da compra: GPS (se o cliente permitiu) e CEP/bairro/cidade/UF da cobrança (sem rua e número).
+        geo: {
+          ...(gps ? { gps } : {}),
+          ...(cardForm && billing.zip ? { cep: { zip: billing.zip, district: billing.district, city: billing.city, uf: billing.uf } } : {}),
+        },
       }).catch(() => ({ ok: false as const, error: "Não conseguimos criar o pedido agora. Tente de novo em instantes.", fields: undefined, dropDiscount: undefined }));
       if (!res.ok) {
         const drop = res.dropDiscount;
@@ -540,7 +549,9 @@ export default function CheckoutForm({ error: initialError, suggestions, initial
               {/* Leve junto (order bump): logo antes de pagar, um toque adiciona ao pedido. */}
               {(quote?.extras ?? []).map((o) => <ExtraOffer key={o.productId} offer={o} location="checkout" className="mt-5 lg:mt-6" />)}
 
-              <label className={`mt-5 lg:mt-6 flex items-start gap-3 text-sm cursor-pointer rounded-2xl bg-white ring-1 p-4 lg:p-0 lg:bg-transparent lg:ring-0 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ink ${errors.accept ? "ring-danger/50" : "ring-line"}`}>
+              <LocationShare value={gps} onChange={setGps} className="mt-5 lg:mt-6" />
+
+              <label className={`mt-3 lg:mt-5 flex items-start gap-3 text-sm cursor-pointer rounded-2xl bg-white ring-1 p-4 lg:p-0 lg:bg-transparent lg:ring-0 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ink ${errors.accept ? "ring-danger/50" : "ring-line"}`}>
                 <input type="checkbox" checked={accept} onChange={(e) => { setAccept(e.target.checked); setErrors(({ accept: _, ...r }) => r); }} className="sr-only" />
                 {/* Marcador redondo no jeito iOS */}
                 <span aria-hidden className={`mt-px size-6 shrink-0 rounded-full grid place-items-center transition-colors ${accept ? "bg-neon text-black ring-1 ring-ink" : errors.accept ? "ring-2 ring-danger" : "ring-[1.5px] ring-line-strong"}`}>{accept ? <CheckIcon size={14} /> : null}</span>

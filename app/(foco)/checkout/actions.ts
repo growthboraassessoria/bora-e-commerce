@@ -1,5 +1,8 @@
 "use server";
 import { z } from "zod";
+import { after } from "next/server";
+import { headers } from "next/headers";
+import { buildGeo, cepGeo, enrichCepGeo, gpsGeo, ipGeo } from "@/lib/server/order-geo";
 import { quote } from "@/lib/server/quote";
 import { cancelPendingOrder, CouponExhaustedError, createOrder, markOrderPaid, orderToken, OutOfStockError, savePaymentData, setPaymentRef } from "@/lib/server/orders";
 import { chargeOf, createCardOrder, PagarmeError, refusalMessage } from "@/lib/server/pagarme";
@@ -51,6 +54,14 @@ const Input = z.object({
   expectedTotalCents: z.number().int().min(0).optional(),
   /** Token do carrinho abandonado (localStorage), para marcar como concluído. */
   checkoutToken: z.string().regex(TOKEN_RE).optional(),
+  /**
+   * Localização (opcional): GPS só quando o cliente tocou em "Compartilhar minha localização";
+   * cep = CEP, bairro, cidade e UF do endereço de cobrança (sem rua e número). Inválido = ignorado, nunca trava a compra.
+   */
+  geo: z.object({
+    gps: z.object({ lat: z.number(), lng: z.number(), accuracy: z.number(), at: z.number().optional() }).optional(),
+    cep: z.object({ zip: z.string().max(12), district: z.string().max(80).optional(), city: z.string().max(64).optional(), uf: z.string().max(2).optional() }).optional(),
+  }).optional().catch(undefined),
   accept: z.literal(true, "Aceite os termos para continuar"),
   lines: z.array(z.object({ variantId: z.string().max(80), quantity: z.number().int().min(1).max(10) })).min(1, "Sacola vazia").max(30),
 }).superRefine((d, ctx) => {
@@ -102,15 +113,26 @@ export async function placeOrder(raw: unknown): Promise<PlaceOrderResult> {
     await completeCheckout(d.checkoutToken, orderId, { name: d.name, email: d.email.toLowerCase(), phone: d.phone, cpf: d.cpf }, d.method).catch((e) => console.error("completeCheckout", e));
   };
 
+  // De onde veio a compra: IP (sempre), CEP de cobrança (cartão) e GPS (só com permissão). Ver lib/geo.ts.
+  const now = new Date();
+  const geo = buildGeo({
+    ip: ipGeo(await headers(), now),
+    cep: d.method === "card" ? cepGeo(d.card?.billing ?? d.geo?.cep, now) : null,
+    gps: gpsGeo(d.geo?.gps, now),
+  });
+
   try {
     const order = await createOrder({
       email: d.email.toLowerCase(), name: d.name, phone: d.phone, cpf: d.cpf,
       address: null,
       pickup: d.pickupSelf ? null : { name: d.pickupName!.trim(), cpf: onlyDigits(d.pickupCpf!), phone: onlyDigits(d.pickupPhone!) },
       shipping: q.selectedShipping, paymentMethod: d.method, paymentProvider: paymentProvider(),
-      couponCode: q.discount?.code ?? null, lines: q.lines, totals: q.totals,
+      couponCode: q.discount?.code ?? null, lines: q.lines, totals: q.totals, geo,
     });
     if (storeMode() === "local") await rememberOrder(order);
+    // Coordenadas do CEP depois da resposta (não atrasa a compra).
+    const zip = geo?.cep?.zip;
+    if (zip) after(() => enrichCepGeo(order.id, zip));
 
     // Cartão pela Pagar.me: cobra na hora. Aprovado → obrigado; recusado → cancela a reserva e mostra o motivo.
     if (order.paymentProvider === "pagarme" && d.method === "card") {

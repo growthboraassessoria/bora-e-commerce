@@ -8,6 +8,7 @@ import type { Totals } from "../pricing";
 import { codeFromId, newOrderCode } from "../orderCode";
 import { recalledOrder } from "./order-cookie";
 import { mergePaymentData, type PaymentData, type PaymentEvent } from "../payment-data";
+import type { OrderGeo } from "../geo";
 
 const SECRET = () => process.env.ORDER_LINK_SECRET || (process.env.NODE_ENV === "production" ? "" : "dev-only-secret");
 
@@ -44,6 +45,8 @@ export type NewOrder = {
   couponCode: string | null; lines: PricedLine[]; totals: Totals;
   /** Outra pessoa retira no evento; nulo = o próprio comprador. */
   pickup: { name: string; cpf: string; phone: string } | null;
+  /** Localização da compra (IP, CEP de cobrança, GPS). Ver lib/geo.ts. */
+  geo?: OrderGeo | null;
 };
 
 // Tempo para pagar antes do pedido ser cancelado e o estoque voltar.
@@ -60,6 +63,7 @@ export async function createOrder(input: NewOrder): Promise<Order> {
     discountCents: input.totals.discountCents + input.totals.pixDiscountCents, totalCents: input.totals.totalCents,
     couponCode: input.couponCode, paymentMethod: input.paymentMethod, paymentProvider: input.paymentProvider, paymentId: null, paidAt: null, items,
     pickupName: input.pickup?.name ?? null, pickupCpf: input.pickup?.cpf ?? null, pickupPhone: input.pickup?.phone ?? null,
+    geo: input.geo ?? null,
   };
 
   if (storeMode() === "local") {
@@ -93,6 +97,8 @@ export async function createOrder(input: NewOrder): Promise<Order> {
       discount_cents: base.discountCents, total_cents: base.totalCents, coupon_code: base.couponCode,
       payment_method: base.paymentMethod, payment_provider: base.paymentProvider,
       pickup_name: base.pickupName, pickup_cpf: base.pickupCpf, pickup_phone: base.pickupPhone,
+      // Sem a migration 0008, o banco ignora esta chave.
+      geo: base.geo,
       expires_at: new Date(Date.now() + HOLD_MINUTES[base.paymentMethod] * 60_000).toISOString(),
     },
     p_items: items.map((i) => ({
@@ -129,6 +135,7 @@ type OrderRow = {
   code: string; created_at: string; paid_at: string | null; picked_up_at: string | null; picked_up_by: string | null;
   canceled_at: string | null; refunded_at: string | null;
   payment_data?: Order["paymentData"];
+  geo?: Order["geo"];
   // Etapas (0005). Antes da migration, não vêm.
   processing_at?: string | null; packed_at?: string | null; shipped_at?: string | null;
   pickup_name: string | null; pickup_cpf: string | null; pickup_phone: string | null;
@@ -151,7 +158,7 @@ function fromOrderRow(r: OrderRow): Order {
     id: r.id, number: r.number, status: r.status, email: r.email, name: r.name, phone: r.phone, cpf: r.cpf, address: r.address,
     shippingMethod: r.shipping_method, shippingCents: r.shipping_cents, subtotalCents: r.subtotal_cents, discountCents: r.discount_cents,
     totalCents: r.total_cents, couponCode: r.coupon_code, paymentMethod: r.payment_method, paymentProvider: r.payment_provider,
-    paymentId: r.payment_id, paymentData: r.payment_data ?? null, createdAt: r.created_at, paidAt: r.paid_at, code: r.code,
+    paymentId: r.payment_id, paymentData: r.payment_data ?? null, geo: r.geo ?? null, createdAt: r.created_at, paidAt: r.paid_at, code: r.code,
     pickupName: r.pickup_name, pickupCpf: r.pickup_cpf, pickupPhone: r.pickup_phone,
     pickedUpAt: r.picked_up_at, pickedUpBy: r.picked_up_by, canceledAt: r.canceled_at, refundedAt: r.refunded_at,
     processingAt: r.processing_at ?? null, packedAt: r.packed_at ?? null, shippedAt: r.shipped_at ?? null,
